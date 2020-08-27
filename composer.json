@@ -1,0 +1,30 @@
+{
+    "name": "sasa-b/apns2",
+    "description": "APNS - Apple Push Notification Service PHP client",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Sasa Blagojevic",
+            "email": "sasa.blagojevic@mail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.0",
+        "guzzlehttp/guzzle": "6.5.x-dev",
+        "lcobucci/jwt": "3.4.x-dev"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "SasaB\\Apns\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SasaB\\Tests\\": "tests/"
+        }
+    }
+}
