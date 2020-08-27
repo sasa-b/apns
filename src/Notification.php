@@ -13,14 +13,18 @@ use SasaB\Payload\Aps;
 
 final class Notification implements \JsonSerializable
 {
+    private $apsId;
+
     private $aps;
 
     private $deviceToken;
 
     private $custom = [];
 
-    public function __construct(string $deviceToken, Aps $aps)
+    public function __construct(Aps $aps, string $deviceToken)
     {
+        $this->apsId = ;
+        $this->aps = $aps;
         $this->deviceToken = $deviceToken;
         $this->aps = $aps;
     }

@@ -12,5 +12,8 @@ use SasaB\Provider\Trust;
 
 final class Certificate implements Trust
 {
-
+    public static function fromFile(string $path): Certificate
+    {
+        return new self();
+    }
 }
