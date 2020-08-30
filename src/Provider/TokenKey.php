@@ -2,15 +2,16 @@
 /**
  * Created by PhpStorm.
  * User: sasa.blagojevic@mail.com
- * Date: 27/08/2020
- * Time: 14:39
+ * Date: 28/08/2020
+ * Time: 14:52
  */
 
-namespace SasaB\Apns;
+namespace SasaB\Apns\Provider;
+
 
 use SasaB\Provider\Trust;
 
-final class Token implements Trust
+final class TokenKey implements Trust
 {
 
 }

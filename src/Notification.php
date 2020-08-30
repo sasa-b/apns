@@ -2,6 +2,8 @@
 
 namespace SasaB\Apns;
 
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use SasaB\Payload\Aps;
 
 /**
@@ -15,17 +17,16 @@ final class Notification implements \JsonSerializable
 {
     private $apsId;
 
-    private $aps;
+    private $token;
 
-    private $deviceToken;
+    private $aps;
 
     private $custom = [];
 
-    public function __construct(Aps $aps, string $deviceToken)
+    public function __construct(string $token, Aps $aps = null)
     {
-        $this->apsId = ;
-        $this->aps = $aps;
-        $this->deviceToken = $deviceToken;
+        $this->apsId = Uuid::uuid4();
+        $this->token = $token;
         $this->aps = $aps;
     }
 
@@ -47,13 +48,9 @@ final class Notification implements \JsonSerializable
         return $this;
     }
 
-    /**
-     * @param string $deviceToken
-     * @return Notification
-     */
-    public function setDeviceToken(string $deviceToken): Notification
+    public function setDevice(string $token): Notification
     {
-        $this->deviceToken = $deviceToken;
+        $this->token = $token;
         return $this;
     }
 
@@ -67,5 +64,37 @@ final class Notification implements \JsonSerializable
     {
         $this->custom[$key] = $value;
         return $this;
+    }
+
+    /**
+     * @return \Ramsey\Uuid\UuidInterface
+     */
+    public function getApsId(): UuidInterface
+    {
+        return $this->apsId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getToken(): string
+    {
+        return $this->token;
+    }
+
+    /**
+     * @return \SasaB\Payload\Aps|null
+     */
+    public function getAps()
+    {
+        return $this->aps;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCustom(): array
+    {
+        return $this->custom;
     }
 }

@@ -2,7 +2,9 @@
 
 namespace SasaB\Apns;
 
-use Psr\Http\Message\StreamInterface;
+use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Promise;
+use Psr\Http\Message\ResponseInterface;
 use SasaB\Provider\Trust;
 
 /**
@@ -14,33 +16,50 @@ use SasaB\Provider\Trust;
 
 final class Client
 {
-    private $stream;
+    private $trust;
 
-    private function __construct(StreamInterface $stream)
+    private $http;
+
+    private function __construct(Trust $trust, ClientInterface $http)
     {
-        $this->stream = $stream;
+        $this->trust = $trust;
+        $this->http = $http;
     }
 
-    public function send(Notification $notification)
+    public function dev(): Client
     {
-        $this->stream->write($notification->getPayload());
     }
 
-    private static function httpClient()
+    public function send(Notification $notification): ResponseInterface
     {
+        return $this->http->post($notification->getToken(), [
 
+        ]);
+    }
+
+    /**
+     * @param \SasaB\Apns\Notification[] $notifications
+     * @return array
+     */
+    public function sendBatch(array $notifications): array
+    {
+        /** @var \GuzzleHttp\Promise\PromiseInterface[] $promises */
+        $promises = [];
+        foreach ($notifications as $notification) {
+            $promises[] = $this->http->postAsync($notification->getToken(), [
+
+            ]);
+        }
+        Promise\settle($promises)->wait();
+        return $promises;
     }
 
     public static function auth(Trust $trust, array $options = []): Client
     {
         $http = new \GuzzleHttp\Client([
-
+            'base_uri' => (string) ($options['base_uri'] ?? Uri::prod())
         ]);
 
-        $stream = $http->request('POST', '/', []);
-
-        $client = new Client();
-
-        return $client;
+        return new self($trust, $http);
     }
 }
