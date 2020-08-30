@@ -57,23 +57,29 @@ final class Aps implements \JsonSerializable
 
     public function asArray(): array
     {
-        $members = get_object_vars($this);
-        foreach ($members as $key => $value) {
+        $alert = $this->alert->asArray();
+
+        if (count($alert) === 1) {
+            $alert = $this->alert->getText();
+        }
+
+        $aps = [
+            ApsKey::ALERT             => $alert,
+            ApsKey::BADGE             => $this->badge,
+            ApsKey::SOUND             => $this->sound,
+            ApsKey::CONTENT_AVAILABLE => $this->contentAvailable,
+            ApsKey::CATEGORY          => $this->category,
+            ApsKey::THREAD_ID         => $this->threadId
+        ];
+
+        foreach ($aps as $key => $value) {
             if ($value === null) {
-                unset($members[$key]);
-                continue;
-            }
-            if ($value instanceof Alert) {
-                $alert = $value->asArray();
-                if (count($alert) === 1) {
-                    $members[$key] = $alert['text'] ?? '';
-                } else {
-                    $members[$key] = $alert;
-                }
+                unset($aps[$key]);
                 continue;
             }
         }
-        return $members;
+
+        return $aps;
     }
 
    public function jsonSerialize()

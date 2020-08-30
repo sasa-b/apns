@@ -37,8 +37,8 @@ class NotificationTest extends TestCase
 
         $message->setAps($aps);
 
-        $this->assertArrayHasKey('aps', $message->asArray());
-        $this->assertSame($aps->asArray(), $message->asArray()['aps']);
+        $this->assertArrayHasKey('aps', $message->getPayload());
+        $this->assertSame($aps->asArray(), $message->getPayload()['aps']);
         $this->assertSame(json_encode(['aps' => $aps]), json_encode($message));
     }
 
@@ -52,9 +52,9 @@ class NotificationTest extends TestCase
 
         $message->setAps($aps);
 
-        $this->assertArrayHasKey('aps', $message->asArray());
+        $this->assertArrayHasKey('aps', $message->getPayload());
         $this->assertArrayHasKey('title', $alert->asArray());
-        $this->assertSame($aps->asArray(), $message->asArray()['aps']);
+        $this->assertSame($aps->asArray(), $message->getPayload()['aps']);
         $this->assertSame(json_encode(['aps' => $aps]), json_encode($message));
     }
 

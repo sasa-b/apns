@@ -23,6 +23,10 @@ final class Alert implements \JsonSerializable
     /**
      * @var string|null
      */
+    private $subtitle;
+    /**
+     * @var string|null
+     */
     private $titleLocKey;
     /**
      * @var array
@@ -48,6 +52,7 @@ final class Alert implements \JsonSerializable
     public function __construct(
         string $text,
         string $title = null,
+        string $subtitle = null,
         string $titleLocKey = null,
         array $titleLocArgs = [],
         string $actionLocKey = null,
@@ -58,6 +63,7 @@ final class Alert implements \JsonSerializable
 
         $this->text = $text;
         $this->title = $title;
+        $this->subtitle = $subtitle;
         $this->titleLocKey = $titleLocKey;
         $this->titleLocArgs = $titleLocArgs;
         $this->actionLocKey = $actionLocKey;
@@ -68,14 +74,21 @@ final class Alert implements \JsonSerializable
 
     public function asArray(): array
     {
-        $members = get_object_vars($this);
-        foreach ($members as $key => $value) {
-            if ($value === null || $value === []) {
-                unset($members[$key]);
-                continue;
-            }
+        $alert = [
+            AlertKey::TITLE          => $this->title,
+            AlertKey::SUBTITLE       => $this->subtitle,
+            AlertKey::BODY           => $this->text,
+            AlertKey::TITLE_LOC_KEY  => $this->titleLocKey,
+            AlertKey::TITLE_LOC_ARGS => $this->titleLocArgs,
+            AlertKey::ACTION_LOC_KEY => $this->actionLocKey,
+            AlertKey::LOC_KEY        => $this->locKey,
+            AlertKey::LOC_ARGS       => $this->locArgs,
+            AlertKey::LAUNCH_IMAGE   => $this->launchImage,
+        ];
+        foreach ($alert as $key => $value) {
+            if ($value === null || $value === []) unset($alert[$key]);
         }
-        return $members;
+        return $alert;
     }
 
     public function jsonSerialize()
@@ -100,6 +113,12 @@ final class Alert implements \JsonSerializable
     public function setTitle(string $title): Alert
     {
         $this->title = $title;
+        return $this;
+    }
+
+    public function setSubtitle(string $subtitle): Alert
+    {
+        $this->subtitle = $subtitle;
         return $this;
     }
 

@@ -34,6 +34,11 @@ final class Uri
         return $uri;
     }
 
+    public function asString(): string
+    {
+        return $this->value;
+    }
+
     public function __toString()
     {
         return $this->value;

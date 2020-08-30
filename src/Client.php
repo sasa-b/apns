@@ -33,7 +33,10 @@ final class Client
 
     public function send(Notification $notification): ResponseInterface
     {
-        $promise = $this->http->requestAsync('POST', $notification->getDeviceToken());
+        $promise = $this->http->requestAsync('POST', $notification->getDeviceToken(), [
+            'json'    => $notification->getPayload(),
+            'headers' => $notification->getHeaders()
+        ]);
         return $promise->wait();
     }
 
@@ -47,7 +50,8 @@ final class Client
         $promises = [];
         foreach ($notifications as $notification) {
             $promises[] = $this->http->requestAsync('POST', $notification->getDeviceToken(), [
-
+                'json'    => $notification->getPayload(),
+                'headers' => $notification->getHeaders()
             ]);
         }
         Promise\settle($promises)->wait();
@@ -56,17 +60,17 @@ final class Client
 
     public static function auth(Trust $trust, array $options = []): Client
     {
-        $options = array_merge($options, $trust->getAuthOptions());
-
-        $http = new \GuzzleHttp\Client([
+        $options = array_merge([
             'version'  => '2.0',
             'base_uri' => (string) ($options['base_uri'] ?? Uri::prod()),
             'headers'  => [
                 'content-type' => 'application/json'
             ]
-        ]);
+        ], $options);
 
-        return new self($trust, $http);
+        $options = array_merge_recursive($options, $trust->getAuthOptions());
+
+        return new self($trust, new \GuzzleHttp\Client($options));
     }
 
     /**

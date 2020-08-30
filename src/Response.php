@@ -9,7 +9,10 @@
 namespace SasaB\Apns;
 
 
-class Response
+final class Response
 {
+    public function __construct(string $uuid, int $code, string $reason)
+    {
 
+    }
 }

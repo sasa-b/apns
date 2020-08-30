@@ -101,6 +101,7 @@ final class JWT implements Trust
     {
         return [
             'headers' => [
+                Headers::APNS_TOPIC    => '',
                 Headers::AUTHORIZATION => "Bearer: $this"
             ]
         ];

@@ -9,7 +9,7 @@
 namespace SasaB\Apns\Payload;
 
 
-interface ApsKeys
+interface ApsKey
 {
     const ALERT = 'alert';
     const BADGE = 'badge';

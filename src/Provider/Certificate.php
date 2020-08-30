@@ -9,16 +9,23 @@
 namespace SasaB\Apns\Provider;
 
 
+use GuzzleHttp\RequestOptions;
+use SasaB\Apns\Headers;
+
 final class Certificate implements Trust
 {
     private $file;
 
-    private $content;
+    private $pushTopic;
 
     public function __construct(string $file)
     {
         $this->file = $file;
-        $this->content = file_get_contents($file);
+
+        if (extension_loaded('openssl')) {
+            $cert = openssl_x509_parse(file_get_contents($file));
+            $this->pushTopic = $cert['subject']['UID'];
+        }
     }
 
     public static function fromFile(string $path): Certificate
@@ -30,8 +37,16 @@ final class Certificate implements Trust
 
     public function getAuthOptions(): array
     {
-        return [
-            'cert' => ''
+        $options = [
+            RequestOptions::CERT => $this->file
         ];
+
+        if ($this->pushTopic) {
+             $options['headers'] = [
+                 Headers::APNS_TOPIC => $this->pushTopic
+             ];
+        }
+
+        return $options;
     }
 }

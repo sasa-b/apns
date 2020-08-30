@@ -9,15 +9,15 @@
 namespace SasaB\Apns\Payload;
 
 
-interface AlertKeys
+interface AlertKey
 {
     const TITLE = 'title';
     const SUBTITLE = 'subtitle';
     const BODY = 'body';
-    const TITLE_LOC = 'title-loc-key';
+    const TITLE_LOC_KEY = 'title-loc-key';
     const TITLE_LOC_ARGS = 'title-loc-args';
-    const ACTION_LOC = 'action-loc-key';
-    const LOC = 'loc-key';
+    const ACTION_LOC_KEY = 'action-loc-key';
+    const LOC_KEY = 'loc-key';
     const LOC_ARGS = 'loc-args';
     const LAUNCH_IMAGE = 'launch-image';
 }

@@ -2,6 +2,7 @@
 
 namespace SasaB\Apns;
 
+
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use SasaB\Apns\Payload\Aps;
@@ -18,13 +19,27 @@ final class Notification implements \JsonSerializable
 {
     use CanBeCastToString;
 
+    const HIGH_PRIORITY = 10;
+
+    const LOW_PRIORITY = 5;
+
+    private $aps;
+
     private $apsId;
 
     private $deviceToken;
 
-    private $aps;
+    private $pushTopic;
 
     private $custom = [];
+
+    private $expiresAt;
+
+    private $collapseId;
+
+    private $priority;
+
+    private $pushType;
 
     public function __construct(string $deviceToken, Aps $aps = null)
     {
@@ -33,7 +48,7 @@ final class Notification implements \JsonSerializable
         $this->aps = $aps;
     }
 
-    public function asArray(): array
+    public function getPayload(): array
     {
         if ($this->aps) {
             return array_merge(['aps' => $this->aps->asArray()], $this->custom);
@@ -43,18 +58,30 @@ final class Notification implements \JsonSerializable
 
     public function jsonSerialize()
     {
-        return $this->asArray();
+        return $this->getPayload();
     }
 
-    public function setAps(Aps $aps): Notification
+    public function setApsId(UuidInterface $apsId = null): Notification
     {
-        $this->aps = $aps;
+        $this->apsId = $apsId;
         return $this;
     }
 
     public function setDeviceToken(string $token): Notification
     {
         $this->deviceToken = $token;
+        return $this;
+    }
+
+    public function setPushTopic(string $pushTopic): Notification
+    {
+        $this->pushTopic = $pushTopic;
+        return $this;
+    }
+
+    public function setAps(Aps $aps): Notification
+    {
+        $this->aps = $aps;
         return $this;
     }
 
@@ -70,13 +97,44 @@ final class Notification implements \JsonSerializable
         return $this;
     }
 
-    public function setApsId(UuidInterface $apsId): Notification
+    /**
+     * @param int $expiresAt
+     * @return Notification
+     */
+    public function setExpiresAt(int $expiresAt): Notification
     {
-        $this->apsId = $apsId;
+        $this->expiresAt = $expiresAt;
         return $this;
     }
 
-    public function getApsId(): UuidInterface
+    public function setCollapseId(string $collapseId): Notification
+    {
+        $this->collapseId = $collapseId;
+        return $this;
+    }
+
+    public function setHighPriority(): Notification
+    {
+        $this->priority = self::HIGH_PRIORITY;
+        return $this;
+    }
+
+    public function setLowPriority(): Notification
+    {
+        $this->priority = self::LOW_PRIORITY;
+        return $this;
+    }
+
+    public function setPushType(string $pushType): Notification
+    {
+        $this->pushType = $pushType;
+        return $this;
+    }
+
+    /**
+     * @return UuidInterface|null
+     */
+    public function getApsId()
     {
         return $this->apsId;
     }
@@ -84,6 +142,14 @@ final class Notification implements \JsonSerializable
     public function getDeviceToken(): string
     {
         return $this->deviceToken;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPushTopic()
+    {
+        return $this->pushTopic;
     }
 
     /**
@@ -97,5 +163,46 @@ final class Notification implements \JsonSerializable
     public function getCustom(): array
     {
         return $this->custom;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getExpiresAt()
+    {
+        return $this->expiresAt;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getPriority()
+    {
+        return $this->priority;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPushType()
+    {
+        return $this->pushType;
+    }
+
+    public function getHeaders(): array
+    {
+        $headers = [
+            Headers::APNS_EXPIRATION  => $this->expiresAt,
+            Headers::APNS_TOPIC       => $this->pushTopic,
+            Headers::APNS_COLLAPSE_ID => $this->collapseId,
+            Headers::APNS_PRIORITY    => $this->priority,
+            Headers::APNS_PUSH_TYPE   => $this->pushType
+        ];
+
+        foreach ($headers as $k => $v) {
+            if ($v === null) unset($headers[$k]);
+        }
+
+        return $headers;
     }
 }
