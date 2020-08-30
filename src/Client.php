@@ -33,7 +33,7 @@ final class Client
 
     public function send(Notification $notification): ResponseInterface
     {
-        $promise = $this->http->requestAsync('POST', $notification->getToken());
+        $promise = $this->http->requestAsync('POST', $notification->getDeviceToken());
         return $promise->wait();
     }
 
@@ -46,7 +46,7 @@ final class Client
         /** @var \GuzzleHttp\Promise\PromiseInterface[] $promises */
         $promises = [];
         foreach ($notifications as $notification) {
-            $promises[] = $this->http->requestAsync('POST', $notification->getToken(), [
+            $promises[] = $this->http->requestAsync('POST', $notification->getDeviceToken(), [
 
             ]);
         }

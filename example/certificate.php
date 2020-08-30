@@ -12,7 +12,7 @@ use SasaB\Apns\Notification;
 
 $certificate = Certificate::fromFile('/');
 
-$client = Client::auth($certificate, []);
+$client = Client::auth($certificate);
 
 $notification = new Notification("");
 

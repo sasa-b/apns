@@ -27,7 +27,7 @@ final class JWT implements Trust
 
     public function __toString()
     {
-        return $this->getToken();
+        return $this->asString();
     }
 
     public static function new(string $teamId, TokenKey $tokenKey): JWT
@@ -35,9 +35,14 @@ final class JWT implements Trust
         $signer = new Sha256();
         $pk = new Key($tokenKey->getContent());
 
+        $now = new \DateTime();
+        $issuedAt = $now->getTimestamp();
+        $expiresAt = $now->modify('+1 hour')->getTimestamp();
+
         $token = (new Builder())
             ->issuedBy($teamId) // (iss claim) // teamId
-            ->issuedAt(time()) // time the token was issuedAt
+            ->issuedAt($issuedAt) // time the token was issuedAt
+            ->expiresAt($expiresAt)
             ->withHeader('kid', $tokenKey->getKeyId())
             ->getToken($signer,  $pk); // Retrieves the generated token
 
@@ -46,14 +51,50 @@ final class JWT implements Trust
 
     public static function parse(string $token): JWT
     {
-        return new self(
-            (new Parser())->parse($token)
-        );
+        return new self((new Parser())->parse($token));
     }
 
-    public function getToken(): string
+    public function setToken(Token $token): JWT
+    {
+        $this->token = $token;
+        return $this;
+    }
+
+    public function getToken(): Token
+    {
+        return $this->token;
+    }
+
+    public function asString(): string
     {
         return (string) $this->token;
+    }
+
+    public function hasExpired(): bool
+    {
+        return $this->token->isExpired();
+    }
+
+    public function refresh(TokenKey $tokenKey): JWT
+    {
+        if ($this->token->isExpired()) {
+            $teamId = $this->token->getClaim('iss');
+
+            $signer = new Sha256();
+            $pk = new Key($tokenKey->getContent());
+
+            $now = new \DateTime();
+            $issuedAt = $now->getTimestamp();
+            $expiresAt = $now->modify('+1 hour')->getTimestamp();
+
+            $this->token = (new Builder())
+                ->issuedBy($teamId) // (iss claim) // teamId
+                ->issuedAt($issuedAt) // time the token was issuedAt
+                ->expiresAt($expiresAt)
+                ->withHeader('kid', $tokenKey->getKeyId())
+                ->getToken($signer,  $pk); // Retrieves the generated token
+        }
+        return $this;
     }
 
     public function getAuthOptions(): array

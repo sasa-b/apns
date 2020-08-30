@@ -34,11 +34,6 @@ final class TokenKey
         }
     }
 
-    public function __toString()
-    {
-        return $this->getContent();
-    }
-
     public function loadFromFile(string $file)
     {
         if (!file_exists($file)) {
@@ -70,5 +65,10 @@ final class TokenKey
         $token->loadFromFile($path);
 
         return $token;
+    }
+
+    public function __toString()
+    {
+        return $this->getContent();
     }
 }

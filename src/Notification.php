@@ -4,7 +4,8 @@ namespace SasaB\Apns;
 
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
-use SasaB\Payload\Aps;
+use SasaB\Apns\Payload\Aps;
+use SasaB\Apns\Payload\CanBeCastToString;
 
 /**
  * Created by PhpStorm.
@@ -15,31 +16,34 @@ use SasaB\Payload\Aps;
 
 final class Notification implements \JsonSerializable
 {
+    use CanBeCastToString;
+
     private $apsId;
 
-    private $token;
+    private $deviceToken;
 
     private $aps;
 
     private $custom = [];
 
-    public function __construct(string $token, Aps $aps = null)
+    public function __construct(string $deviceToken, Aps $aps = null)
     {
         $this->apsId = Uuid::uuid4();
-        $this->token = $token;
+        $this->deviceToken = $deviceToken;
         $this->aps = $aps;
     }
 
-    public function __toString()
+    public function asArray(): array
     {
-        $encoded = json_encode($this);
-
-        return $encoded === false ? json_last_error_msg() : $encoded;
+        if ($this->aps) {
+            return array_merge(['aps' => $this->aps->asArray()], $this->custom);
+        }
+        return $this->custom;
     }
 
     public function jsonSerialize()
     {
-        return array_merge($this->aps->jsonSerialize(), $this->custom);
+        return $this->asArray();
     }
 
     public function setAps(Aps $aps): Notification
@@ -48,9 +52,9 @@ final class Notification implements \JsonSerializable
         return $this;
     }
 
-    public function setDevice(string $token): Notification
+    public function setDeviceToken(string $token): Notification
     {
-        $this->token = $token;
+        $this->deviceToken = $token;
         return $this;
     }
 
@@ -66,33 +70,30 @@ final class Notification implements \JsonSerializable
         return $this;
     }
 
-    /**
-     * @return \Ramsey\Uuid\UuidInterface
-     */
+    public function setApsId(UuidInterface $apsId): Notification
+    {
+        $this->apsId = $apsId;
+        return $this;
+    }
+
     public function getApsId(): UuidInterface
     {
         return $this->apsId;
     }
 
-    /**
-     * @return string
-     */
-    public function getToken(): string
+    public function getDeviceToken(): string
     {
-        return $this->token;
+        return $this->deviceToken;
     }
 
     /**
-     * @return \SasaB\Payload\Aps|null
+     * @return Aps|null
      */
     public function getAps()
     {
         return $this->aps;
     }
 
-    /**
-     * @return array
-     */
     public function getCustom(): array
     {
         return $this->custom;

@@ -6,10 +6,12 @@
  * Time: 14:38
  */
 
-namespace SasaB\Payload;
+namespace SasaB\Apns\Payload;
 
 final class Alert implements \JsonSerializable
 {
+    use CanBeCastToString;
+
     /**
      * @var string
      */
@@ -64,22 +66,21 @@ final class Alert implements \JsonSerializable
         $this->launchImage = $launchImage;
     }
 
-    public function __toString()
-    {
-        $encoded = json_encode($this);
-
-        return $encoded === false ? json_last_error_msg() : $encoded;
-    }
-
-    public function jsonSerialize()
+    public function asArray(): array
     {
         $members = get_object_vars($this);
         foreach ($members as $key => $value) {
             if ($value === null || $value === []) {
                 unset($members[$key]);
+                continue;
             }
         }
         return $members;
+    }
+
+    public function jsonSerialize()
+    {
+        return $this->asArray();
     }
 
     /**

@@ -30,6 +30,8 @@ final class Certificate implements Trust
 
     public function getAuthOptions(): array
     {
-
+        return [
+            'cert' => ''
+        ];
     }
 }

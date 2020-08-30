@@ -1,6 +1,6 @@
 <?php
 
-namespace SasaB\Payload;
+namespace SasaB\Apns\Payload;
 
 
 /**
@@ -10,10 +10,10 @@ namespace SasaB\Payload;
  * Time: 15:12
  */
 
-use SasaB\Payload\Alert;
-
 final class Aps implements \JsonSerializable
 {
+    use CanBeCastToString;
+
     /**
      * @var Alert
      */
@@ -41,7 +41,7 @@ final class Aps implements \JsonSerializable
 
     public function __construct(
        Alert $alert,
-       int $badge = 10,
+       int $badge = null,
        string $sound = null,
        int $contentAvailable = null,
        string $category = null,
@@ -55,22 +55,30 @@ final class Aps implements \JsonSerializable
        $this->threadId = $threadId;
    }
 
-   public function __toString()
-   {
-       $encoded = json_encode(array_merge(['aps' => $aps], $this->custom));
-
-       return $encoded === false ? json_last_error_msg() : $encoded;
-   }
-
-   public function jsonSerialize()
-   {
+    public function asArray(): array
+    {
         $members = get_object_vars($this);
         foreach ($members as $key => $value) {
             if ($value === null) {
                 unset($members[$key]);
+                continue;
+            }
+            if ($value instanceof Alert) {
+                $alert = $value->asArray();
+                if (count($alert) === 1) {
+                    $members[$key] = $alert['text'] ?? '';
+                } else {
+                    $members[$key] = $alert;
+                }
+                continue;
             }
         }
         return $members;
+    }
+
+   public function jsonSerialize()
+   {
+       return $this->asArray();
    }
 
     /**
@@ -117,7 +125,7 @@ final class Aps implements \JsonSerializable
      * @param mixed $category
      * @return Aps
      */
-    public function setCategory($category): Aps
+    public function setCategory(string $category): Aps
     {
         $this->category = $category;
         return $this;
@@ -133,18 +141,15 @@ final class Aps implements \JsonSerializable
         return $this;
     }
 
-    /**
-     * @return \SasaB\Payload\Alert
-     */
     public function getAlert(): Alert
     {
         return $this->alert;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getBadge(): int
+    public function getBadge()
     {
         return $this->badge;
     }

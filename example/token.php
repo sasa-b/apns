@@ -12,10 +12,14 @@ use SasaB\Apns\Provider\JWT;
 use SasaB\Apns\Provider\TokenKey;
 
 
-$token = new TokenKey('key-id');
-$token->loadFromFile('/file-path');
+$tokenKey = new TokenKey('key-id', 'team-id', 'file');
+$tokenKey->loadFromFile('/file-path');
 
-$jwt = JWT::new('team-id', $token);
+$jwt = JWT::new('team-id', $tokenKey);
+
+if ($jwt->hasExpired()) {
+    $jwt->refresh($tokenKey);
+}
 
 $client = Client::auth($jwt);
 
