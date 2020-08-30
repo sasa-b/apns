@@ -12,7 +12,7 @@ use SasaB\Apns\Provider\JWT;
 use SasaB\Apns\Provider\TokenKey;
 
 
-$tokenKey = new TokenKey('key-id', 'team-id', 'file');
+$tokenKey = new TokenKey('key-id');
 $tokenKey->loadFromFile('/file-path');
 
 $jwt = JWT::new('team-id', $tokenKey);
