@@ -4,8 +4,13 @@ namespace SasaB\Apns;
 
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Promise;
+
 use Psr\Http\Message\ResponseInterface;
-use SasaB\Provider\Trust;
+
+use SasaB\Apns\Provider\Certificate;
+use SasaB\Apns\Provider\Trust;
+use SasaB\Apns\Provider\JWT;
+
 
 /**
  * Created by PhpStorm.
@@ -26,15 +31,10 @@ final class Client
         $this->http = $http;
     }
 
-    public function dev(): Client
-    {
-    }
-
     public function send(Notification $notification): ResponseInterface
     {
-        return $this->http->post($notification->getToken(), [
-
-        ]);
+        $promise = $this->http->requestAsync('POST', $notification->getToken());
+        return $promise->wait();
     }
 
     /**
@@ -46,7 +46,7 @@ final class Client
         /** @var \GuzzleHttp\Promise\PromiseInterface[] $promises */
         $promises = [];
         foreach ($notifications as $notification) {
-            $promises[] = $this->http->postAsync($notification->getToken(), [
+            $promises[] = $this->http->requestAsync('POST', $notification->getToken(), [
 
             ]);
         }
@@ -56,10 +56,24 @@ final class Client
 
     public static function auth(Trust $trust, array $options = []): Client
     {
+        $options = array_merge($options, $trust->getAuthOptions());
+
         $http = new \GuzzleHttp\Client([
-            'base_uri' => (string) ($options['base_uri'] ?? Uri::prod())
+            'version'  => '2.0',
+            'base_uri' => (string) ($options['base_uri'] ?? Uri::prod()),
+            'headers'  => [
+                'content-type' => 'application/json'
+            ]
         ]);
 
         return new self($trust, $http);
+    }
+
+    /**
+     * @return Trust|Certificate|JWT
+     */
+    public function getTrust(): Trust
+    {
+        return $this->trust;
     }
 }

@@ -6,14 +6,30 @@
  * Time: 14:39
  */
 
-namespace SasaB\Apns;
+namespace SasaB\Apns\Provider;
 
-use SasaB\Provider\Trust;
 
 final class Certificate implements Trust
 {
+    private $file;
+
+    private $content;
+
+    public function __construct(string $file)
+    {
+        $this->file = $file;
+        $this->content = file_get_contents($file);
+    }
+
     public static function fromFile(string $path): Certificate
     {
-        return new self();
+        if (!file_exists($path)) throw new \InvalidArgumentException("File [$path] not found");
+
+        return new self($path);
+    }
+
+    public function getAuthOptions(): array
+    {
+
     }
 }

@@ -6,9 +6,9 @@
  * Time: 14:39
  */
 
-namespace SasaB\Provider;
+namespace SasaB\Apns\Provider;
 
 interface Trust
 {
-
+    public function getAuthOptions(): array;
 }

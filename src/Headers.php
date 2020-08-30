@@ -6,7 +6,7 @@
  * Time: 15:16
  */
 
-namespace SasaB\Apns\Request;
+namespace SasaB\Apns;
 
 
 interface Headers
@@ -17,4 +17,6 @@ interface Headers
     const APNS_TOPIC = 'apns-topic';
     const APNS_COLLAPSE_ID = 'apns-collapse-id';
     const APNS_PUSH_TYPE = 'apns-push-type';
+
+    const AUTHORIZATION = 'authorization';
 }
