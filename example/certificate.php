@@ -16,10 +16,11 @@ $certificate = Certificate::fromFile('./PushCert.pem');
 
 $client = Client::auth($certificate);
 
+// 51d5f3696c9cc62caf322fbcfd0b25a455697b1c3261eb4ed085041c6e895bdb
 $notification = new Notification("51d5f3696c9cc62caf322fbcfd0b25a455697b1c3261eb4ed085041c6e895bdb");
 
 $notification->setCustomKey('mdm', ['PushMagic' => '4DA9FEC7-5443-48B3-9491-892F1147BE47']);
 
 $response = $client->send($notification);
 
-var_dump($response->getStatusCode(), $response->getReasonPhrase());
+echo $response;
