@@ -10,7 +10,7 @@ namespace SasaB\Apns\Provider;
 
 
 use GuzzleHttp\RequestOptions;
-use SasaB\Apns\Headers;
+use SasaB\Apns\Header;
 
 final class Certificate implements Trust
 {
@@ -43,7 +43,7 @@ final class Certificate implements Trust
 
         if ($this->pushTopic) {
              $options['headers'] = [
-                 Headers::APNS_TOPIC => $this->pushTopic
+                 Header::APNS_TOPIC => $this->pushTopic
              ];
         }
 

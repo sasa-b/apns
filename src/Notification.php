@@ -192,11 +192,11 @@ final class Notification implements \JsonSerializable
     public function getHeaders(): array
     {
         $headers = [
-            Headers::APNS_EXPIRATION  => $this->expiresAt,
-            Headers::APNS_TOPIC       => $this->pushTopic,
-            Headers::APNS_COLLAPSE_ID => $this->collapseId,
-            Headers::APNS_PRIORITY    => $this->priority,
-            Headers::APNS_PUSH_TYPE   => $this->pushType
+            Header::APNS_EXPIRATION  => $this->expiresAt,
+            Header::APNS_TOPIC       => $this->pushTopic,
+            Header::APNS_COLLAPSE_ID => $this->collapseId,
+            Header::APNS_PRIORITY    => $this->priority,
+            Header::APNS_PUSH_TYPE   => $this->pushType
         ];
 
         foreach ($headers as $k => $v) {

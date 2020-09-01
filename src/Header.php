@@ -9,7 +9,7 @@
 namespace SasaB\Apns;
 
 
-interface Headers
+interface Header
 {
     const APNS_ID = 'apns-id';
     const APNS_EXPIRATION = 'apns-expiration';

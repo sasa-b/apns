@@ -13,7 +13,7 @@ use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\Ecdsa\Sha256;
 use Lcobucci\JWT\Token;
-use SasaB\Apns\Headers;
+use SasaB\Apns\Header;
 
 
 final class JWT implements Trust
@@ -101,8 +101,8 @@ final class JWT implements Trust
     {
         return [
             'headers' => [
-                Headers::APNS_TOPIC    => '',
-                Headers::AUTHORIZATION => "Bearer: $this"
+                Header::APNS_TOPIC    => '',
+                Header::AUTHORIZATION => "Bearer: $this"
             ]
         ];
     }

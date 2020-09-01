@@ -3,9 +3,8 @@
 namespace SasaB\Apns;
 
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Promise;
-
-use Psr\Http\Message\ResponseInterface;
 
 use SasaB\Apns\Provider\Certificate;
 use SasaB\Apns\Provider\Trust;
@@ -31,18 +30,24 @@ final class Client
         $this->http = $http;
     }
 
-    public function send(Notification $notification): ResponseInterface
+    public function send(Notification $notification): Response
     {
         $promise = $this->http->requestAsync('POST', $notification->getDeviceToken(), [
             'json'    => $notification->getPayload(),
             'headers' => $notification->getHeaders()
         ]);
-        return $promise->wait();
+
+        try {
+            $response = Response::fromPsr7($promise->wait());
+        } catch (BadResponseException $e) {
+            $response = Response::fromPsr7($e->getResponse());
+        }
+        return $response;
     }
 
     /**
      * @param \SasaB\Apns\Notification[] $notifications
-     * @return array
+     * @return \SasaB\Apns\Response[]
      */
     public function sendBatch(array $notifications): array
     {
@@ -54,8 +59,15 @@ final class Client
                 'headers' => $notification->getHeaders()
             ]);
         }
-        Promise\settle($promises)->wait();
-        return $promises;
+        $responses = [];
+        foreach (Promise\settle($promises)->wait() as $settled) {
+            if (isset($settled['reason'])) {
+                $responses[] = Response::fromPsr7($settled['reason']->getResponse());
+            } else {
+                $responses[] = Response::fromPsr7($settled['value']);
+            }
+        }
+        return $responses;
     }
 
     public static function auth(Trust $trust, array $options = []): Client
