@@ -101,7 +101,7 @@ final class Aps implements \JsonSerializable
      * @param mixed $badge
      * @return Aps
      */
-    public function setBadge(string $badge): Aps
+    public function setBadge(int $badge): Aps
     {
         $this->badge = $badge;
         return $this;

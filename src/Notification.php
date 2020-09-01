@@ -192,6 +192,7 @@ final class Notification implements \JsonSerializable
     public function getHeaders(): array
     {
         $headers = [
+            Header::APNS_ID          => (string) $this->apsId,
             Header::APNS_EXPIRATION  => $this->expiresAt,
             Header::APNS_TOPIC       => $this->pushTopic,
             Header::APNS_COLLAPSE_ID => $this->collapseId,
@@ -200,7 +201,7 @@ final class Notification implements \JsonSerializable
         ];
 
         foreach ($headers as $k => $v) {
-            if ($v === null) unset($headers[$k]);
+            if (!$v) unset($headers[$k]);
         }
 
         return $headers;

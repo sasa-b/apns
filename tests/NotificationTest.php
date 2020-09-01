@@ -67,17 +67,17 @@ class NotificationTest extends TestCase
 
         $payload = $message->getCustom();
 
-        $this->assertEquals($payload, ['acme' => 'baz', 'foo' => 'bar']);
+        $this->assertEquals(['acme' => 'baz', 'foo' => 'bar'], $payload);
         $this->assertSame(json_encode($payload), (string) $message);
     }
 
     public function testItCanSetMdmPayload()
     {
-        $mdmPayload = ['mdm' => ['PushMagic' => 'xxx-xxx-xxx-xxx']];
+        $mdmPayload = ['mdm' => 'xxx-xxx-xxx-xxx'];
 
         $message = new Notification('device-token');
 
-        $message->setCustomKey('mdm', ['PushMagic' => 'xxx-xxx-xxx-xxx']);
+        $message->setCustomKey('mdm', 'xxx-xxx-xxx-xxx');
 
         $this->assertInstanceOf(UuidInterface::class, $message->getApsId());
         $this->assertSame($mdmPayload, $message->getCustom());
