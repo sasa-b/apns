@@ -40,11 +40,11 @@ final class JWT implements Trust
         $expiresAt = $now->modify('+1 hour')->getTimestamp();
 
         $token = (new Builder())
-            ->issuedBy($teamId) // (iss claim) // teamId
-            ->issuedAt($issuedAt) // time the token was issuedAt
+            ->issuedBy($teamId) // (iss claim) - teamId
+            ->issuedAt($issuedAt)
             ->expiresAt($expiresAt)
             ->withHeader('kid', $tokenKey->getKeyId())
-            ->getToken($signer,  $pk); // Retrieves the generated token
+            ->getToken($signer,  $pk);
 
         return new self($token);
     }
@@ -88,11 +88,11 @@ final class JWT implements Trust
             $expiresAt = $now->modify('+1 hour')->getTimestamp();
 
             $this->token = (new Builder())
-                ->issuedBy($teamId) // (iss claim) // teamId
-                ->issuedAt($issuedAt) // time the token was issuedAt
+                ->issuedBy($teamId) // (iss claim) - teamId
+                ->issuedAt($issuedAt)
                 ->expiresAt($expiresAt)
                 ->withHeader('kid', $tokenKey->getKeyId())
-                ->getToken($signer,  $pk); // Retrieves the generated token
+                ->getToken($signer,  $pk);
         }
         return $this;
     }

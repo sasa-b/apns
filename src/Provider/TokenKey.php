@@ -34,6 +34,15 @@ final class TokenKey
         }
     }
 
+    public static function fromFile(string $keyId, string $path): TokenKey
+    {
+        $token = new TokenKey($keyId);
+
+        $token->loadFromFile($path);
+
+        return $token;
+    }
+
     public function loadFromFile(string $file)
     {
         if (!file_exists($file)) {
@@ -56,15 +65,6 @@ final class TokenKey
     public function getContent(): string
     {
         return (string) $this->content;
-    }
-
-    public static function fromFile(string $keyId, string $path): TokenKey
-    {
-        $token = new TokenKey($keyId);
-
-        $token->loadFromFile($path);
-
-        return $token;
     }
 
     public function __toString()

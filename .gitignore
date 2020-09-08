@@ -1,3 +1,4 @@
 /vendor/
 .idea
 /example/PushCert.pem
+/example/AuthKey_GVN5Q3V6GL.p8
