@@ -49,4 +49,9 @@ final class Certificate implements Trust
 
         return $options;
     }
+
+    public function getFilePath(): string
+    {
+        return $this->file;
+    }
 }

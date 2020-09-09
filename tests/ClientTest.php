@@ -10,16 +10,56 @@ namespace SasaB\Tests;
 
 
 use PHPUnit\Framework\TestCase;
+use Ramsey\Uuid\Uuid;
+use SasaB\Apns\Client;
+use SasaB\Apns\Notification;
+use SasaB\Apns\Provider\JWT;
 
 class ClientTest extends TestCase
 {
+    use CreateCertificateTrust, CreateTokenKeyTrust;
+
     public function testItCanSendNotification()
     {
+        $certificate = $this->makeCertificate();
 
+        $client = Client::auth($certificate);
+
+        $notification = new Notification("51d5f3696c9cc62caf322fbcfd0b25a455697b1c3261eb4ed085041c6e895bdb");
+
+        $notification->setApsId($apsId = Uuid::uuid4());
+
+        $notification->setCustomKey('mdm', '4DA9FEC7-5443-48B3-9491-892F1147BE47');
+
+        $response = $client->send($notification);
+
+        $this->assertSame((string) $apsId, (string) $response->getApnsId());
+        $this->assertSame(200, $response->getCode());
     }
 
     public function testItCanSendBatchOfNotifications()
     {
+        $tokenKey = $this->makeTokenKey();
 
+        $jwt = JWT::new($this->teamId, $tokenKey);
+
+        if ($jwt->hasExpired()) {
+            $jwt->refresh($tokenKey);
+        }
+
+        $client = Client::auth($jwt);
+
+        $notification = new Notification("51d5f3696c9cc62caf322fbcfd0b25a455697b1c3261eb4ed085041c6e895bdb");
+
+        $notification->setApsId($apsId = Uuid::uuid4());
+
+        $notification->setPushTopic(file_get_contents('certs/apns-topic.txt'));
+
+        $notification->setCustomKey('mdm', '4DA9FEC7-5443-48B3-9491-892F1147BE47');
+
+        $response = $client->send($notification);
+
+        $this->assertSame((string) $apsId, (string) $response->getApnsId());
+        $this->assertSame(200, $response->getCode());
     }
 }

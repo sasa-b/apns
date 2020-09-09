@@ -14,11 +14,13 @@ use SasaB\Apns\Notification;
 use SasaB\Apns\Provider\JWT;
 use SasaB\Apns\Provider\TokenKey;
 
+$keyId = file_get_contents('../tests/certs/key-id.txt');
+$teamId = file_get_contents('../tests/certs/team-id.txt');
 
-$tokenKey = new TokenKey('GVN5Q3V6GL');
-$tokenKey->loadFromFile('AuthKey_GVN5Q3V6GL.p8');
+$tokenKey = new TokenKey($keyId);
+$tokenKey->loadFromFile('../tests/certs/AuthKey.p8');
 
-$jwt = JWT::new('X7XGQHWDNM', $tokenKey);
+$jwt = JWT::new($teamId, $tokenKey);
 
 if ($jwt->hasExpired()) {
     $jwt->refresh($tokenKey);

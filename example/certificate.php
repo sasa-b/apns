@@ -13,11 +13,10 @@ use SasaB\Apns\Client;
 use SasaB\Apns\Notification;
 use \Ramsey\Uuid\Uuid;
 
-$certificate = Certificate::fromFile('./PushCert.pem');
+$certificate = Certificate::fromFile('../tests/certs/PushCert.pem');
 
 $client = Client::auth($certificate);
 
-// 51d5f3696c9cc62caf322fbcfd0b25a455697b1c3261eb4ed085041c6e895bdb
 $notification = new Notification("51d5f3696c9cc62caf322fbcfd0b25a455697b1c3261eb4ed085041c6e895bdb");
 
 $notification->setApsId($apsId = Uuid::uuid4());
