@@ -1,6 +1,28 @@
 # apns
 APNS - Apple Push Notification Service PHP Client
 
+## Requirements
+```
+PHP >= 7.0
+lib-curl >= 7.46.0 (with http/2 support enabled)
+lib-openssl >= 1.0.2e
+```
+
+In case of PHP 7.0 you will need to compile PHP from source with the newer lib-curl which supports HTTP2 requests:
+```
+./configure --with-curl=/usr/local/include/curl --with-libdir=lib64 --with-openssl ...
+
+./make
+```
+
+
+## Installation
+```
+composer require sasa-b/apns2
+```
+
+## Getting Started
+
 ### Certificate Provider Trust
 
 ```php
