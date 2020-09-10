@@ -8,10 +8,11 @@
 
 require dirname(__DIR__).'/vendor/autoload.php';
 
-use SasaB\Apns\Provider\Certificate;
+use Ramsey\Uuid\Uuid;
+
 use SasaB\Apns\Client;
 use SasaB\Apns\Notification;
-use \Ramsey\Uuid\Uuid;
+use SasaB\Apns\Provider\Certificate;
 
 $certificate = Certificate::fromFile('../tests/certs/PushCert.pem');
 
@@ -22,7 +23,6 @@ $notification = new Notification("51d5f3696c9cc62caf322fbcfd0b25a455697b1c3261eb
 $notification->setApsId($apsId = Uuid::uuid4());
 
 $notification->setCustomKey('mdm', '4DA9FEC7-5443-48B3-9491-892F1147BE47');
-
 
 $response = $client->send($notification);
 
