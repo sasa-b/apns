@@ -3,6 +3,16 @@
     "description": "APNS - Apple Push Notification Service PHP client",
     "type": "library",
     "license": "MIT",
+    "keywords": [
+        "apns",
+        "apns2",
+        "push-notifications",
+        "apple",
+        "ios",
+        "client",
+        "http",
+        "http2"
+    ],
     "authors": [
         {
             "name": "Sasa Blagojevic",
