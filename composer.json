@@ -2,6 +2,7 @@
     "name": "sasa-b/apns2",
     "description": "APNS - Apple Push Notification Service PHP client",
     "type": "library",
+    "license": "MIT",
     "authors": [
         {
             "name": "Sasa Blagojevic",

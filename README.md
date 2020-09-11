@@ -1,6 +1,9 @@
 # apns
 APNS - Apple Push Notification Service PHP Client
 
+[![PHP >= 7.0](https://img.shields.io/badge/php-%3E%3D%207.0-8892BF.svg?style=flat-square)](https://php.net/)
+![](https://img.shields.io/packagist/v/sasa-b/apns2)
+
 ## Requirements
 ```
 PHP >= 7.0
