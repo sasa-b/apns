@@ -14,46 +14,14 @@ final class Aps implements \JsonSerializable
 {
     use CanBeCastToString;
 
-    /**
-     * @var Alert
-     */
-    private $alert;
-    /**
-     * @var int
-     */
-    private $badge;
-    /**
-     * @var string|null
-     */
-    private $sound;
-    /**
-     * @var int|null
-     */
-    private $contentAvailable;
-    /**
-     * @var string|null
-     */
-    private $category;
-    /**
-     * @var string|null
-     */
-    private $threadId;
-
     public function __construct(
-       Alert $alert,
-       int $badge = null,
-       string $sound = null,
-       int $contentAvailable = null,
-       string $category = null,
-       string $threadId = null)
-   {
-       $this->alert = $alert;
-       $this->badge = $badge;
-       $this->sound = $sound;
-       $this->contentAvailable = $contentAvailable;
-       $this->category = $category;
-       $this->threadId = $threadId;
-   }
+       private Alert $alert,
+       private ?int $badge = null,
+       private ?string $sound = null,
+       private ?int $contentAvailable = null,
+       private ?string $category = null,
+       private ?string $threadId = null
+    ) {}
 
     public function asArray(): array
     {
@@ -82,65 +50,41 @@ final class Aps implements \JsonSerializable
         return $aps;
     }
 
-   public function jsonSerialize()
+   public function jsonSerialize(): array
    {
        return $this->asArray();
    }
 
-    /**
-     * @param mixed $alert
-     * @return Aps
-     */
     public function setAlert(Alert $alert): Aps
     {
         $this->alert = $alert;
         return $this;
     }
 
-    /**
-     * @param mixed $badge
-     * @return Aps
-     */
     public function setBadge(int $badge): Aps
     {
         $this->badge = $badge;
         return $this;
     }
 
-    /**
-     * @param mixed $sound
-     * @return Aps
-     */
     public function setSound(string $sound): Aps
     {
         $this->sound = $sound;
         return $this;
     }
 
-    /**
-     * @param mixed $contentAvailable
-     * @return Aps
-     */
     public function setContentAvailable(int $contentAvailable): Aps
     {
         $this->contentAvailable = $contentAvailable;
         return $this;
     }
 
-    /**
-     * @param mixed $category
-     * @return Aps
-     */
     public function setCategory(string $category): Aps
     {
         $this->category = $category;
         return $this;
     }
 
-    /**
-     * @param string|null $threadId
-     * @return Aps
-     */
     public function setThreadId(string $threadId): Aps
     {
         $this->threadId = $threadId;
@@ -152,42 +96,27 @@ final class Aps implements \JsonSerializable
         return $this->alert;
     }
 
-    /**
-     * @return int|null
-     */
-    public function getBadge()
+    public function getBadge(): ?int
     {
         return $this->badge;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getSound()
+    public function getSound(): ?string
     {
         return $this->sound;
     }
 
-    /**
-     * @return int|null
-     */
-    public function getContentAvailable()
+    public function getContentAvailable(): ?int
     {
         return $this->contentAvailable;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getCategory()
+    public function getCategory(): ?string
     {
         return $this->category;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getThreadId()
+    public function getThreadId(): ?string
     {
         return $this->threadId;
     }

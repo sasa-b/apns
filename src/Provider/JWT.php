@@ -18,14 +18,14 @@ use SasaB\Apns\Header;
 
 final class JWT implements Trust
 {
-    private $token;
+    private Token $token;
 
     public function __construct(Token  $token)
     {
         $this->token = $token;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->asString();
     }

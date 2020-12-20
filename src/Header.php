@@ -11,12 +11,12 @@ namespace SasaB\Apns;
 
 interface Header
 {
-    const APNS_ID = 'apns-id';
-    const APNS_EXPIRATION = 'apns-expiration';
-    const APNS_PRIORITY = 'apns-priority';
-    const APNS_TOPIC = 'apns-topic';
-    const APNS_COLLAPSE_ID = 'apns-collapse-id';
-    const APNS_PUSH_TYPE = 'apns-push-type';
+    public const APNS_ID = 'apns-id';
+    public const APNS_EXPIRATION = 'apns-expiration';
+    public const APNS_PRIORITY = 'apns-priority';
+    public const APNS_TOPIC = 'apns-topic';
+    public const APNS_COLLAPSE_ID = 'apns-collapse-id';
+    public const APNS_PUSH_TYPE = 'apns-push-type';
 
-    const AUTHORIZATION = 'authorization';
+    public const AUTHORIZATION = 'authorization';
 }

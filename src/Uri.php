@@ -11,12 +11,11 @@ namespace SasaB\Apns;
 
 final class Uri
 {
-    const DEV = 'https://api.development.push.apple.com';
-    const PROD = 'https://api.push.apple.com';
-    const PORT = 443;
-    const PATH = '/3/device/';
+    private const DEV = 'https://api.development.push.apple.com';
+    private const PROD = 'https://api.push.apple.com';
+    private const PATH = '/3/device/';
 
-    private $value;
+    private string $value;
 
     private function __construct() {}
 
@@ -39,7 +38,7 @@ final class Uri
         return $this->value;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->value;
     }

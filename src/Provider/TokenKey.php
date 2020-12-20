@@ -11,24 +11,13 @@ namespace SasaB\Apns\Provider;
 
 final class TokenKey
 {
-    /**
-     * @var string
-     */
-    private $keyId;
-    /**
-     * @var string
-     */
-    private $file;
-    /**
-     * @var false|string
-     */
-    private $content;
+    private string $content;
 
-    public function __construct(string $keyId, string $file = '')
+    public function __construct(
+        private string $keyId,
+        private string $file = ''
+    )
     {
-        $this->keyId = $keyId;
-        $this->file = $file;
-
         if ($file) {
             $this->loadFromFile($file);
         }
@@ -43,13 +32,13 @@ final class TokenKey
         return $token;
     }
 
-    public function loadFromFile(string $file)
+    public function loadFromFile(string $file): void
     {
         if (!file_exists($file)) {
             throw new \InvalidArgumentException("File [$file] not found");
         }
         $this->file = $file;
-        $this->content = file_get_contents($file);
+        $this->content = file_get_contents($file) ?: '';
     }
 
     public function getKeyId(): string
@@ -64,10 +53,10 @@ final class TokenKey
 
     public function getContent(): string
     {
-        return (string) $this->content;
+        return $this->content;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getContent();
     }

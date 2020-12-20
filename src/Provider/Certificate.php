@@ -14,9 +14,9 @@ use SasaB\Apns\Header;
 
 final class Certificate implements Trust
 {
-    private $file;
+    private string $file;
 
-    private $pushTopic;
+    private ?string $pushTopic = null;
 
     public function __construct(string $file)
     {
@@ -30,7 +30,9 @@ final class Certificate implements Trust
 
     public static function fromFile(string $path): Certificate
     {
-        if (!file_exists($path)) throw new \InvalidArgumentException("File [$path] not found");
+        if (!file_exists($path)) {
+            throw new \InvalidArgumentException("File [$path] not found");
+        }
 
         return new self($path);
     }

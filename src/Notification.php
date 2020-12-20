@@ -19,33 +19,23 @@ final class Notification implements \JsonSerializable
 {
     use CanBeCastToString;
 
-    const HIGH_PRIORITY = 10;
+    public const HIGH_PRIORITY = 10;
+    public const LOW_PRIORITY = 5;
 
-    const LOW_PRIORITY = 5;
+    private UuidInterface $apsId;
 
-    private $aps;
-
-    private $apsId;
-
-    private $deviceToken;
-
-    private $pushTopic;
-
-    private $custom = [];
-
-    private $expiresAt;
-
-    private $collapseId;
-
-    private $priority;
-
-    private $pushType;
-
-    public function __construct(string $deviceToken, Aps $aps = null)
+    public function __construct(
+        private string $deviceToken,
+        private ?Aps $aps = null,
+        private ?string $pushTopic = null,
+        private array $custom = [],
+        private ?int $expiresAt = null,
+        private ?string $collapseId = null,
+        private ?int $priority = null,
+        private ?string $pushType = null
+    )
     {
         $this->apsId = Uuid::uuid4();
-        $this->deviceToken = $deviceToken;
-        $this->aps = $aps;
     }
 
     public function getPayload(): array
@@ -61,7 +51,7 @@ final class Notification implements \JsonSerializable
         return $this->getPayload();
     }
 
-    public function setApsId(UuidInterface $apsId = null): Notification
+    public function setApsId(UuidInterface $apsId): Notification
     {
         $this->apsId = $apsId;
         return $this;
@@ -97,10 +87,6 @@ final class Notification implements \JsonSerializable
         return $this;
     }
 
-    /**
-     * @param int $expiresAt
-     * @return Notification
-     */
     public function setExpiresAt(int $expiresAt): Notification
     {
         $this->expiresAt = $expiresAt;
@@ -131,10 +117,7 @@ final class Notification implements \JsonSerializable
         return $this;
     }
 
-    /**
-     * @return UuidInterface|null
-     */
-    public function getApsId()
+    public function getApsId(): UuidInterface
     {
         return $this->apsId;
     }
@@ -144,18 +127,12 @@ final class Notification implements \JsonSerializable
         return $this->deviceToken;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getPushTopic()
+    public function getPushTopic(): ?string
     {
         return $this->pushTopic;
     }
 
-    /**
-     * @return Aps|null
-     */
-    public function getAps()
+    public function getAps(): ?Aps
     {
         return $this->aps;
     }
@@ -165,26 +142,17 @@ final class Notification implements \JsonSerializable
         return $this->custom;
     }
 
-    /**
-     * @return int|null
-     */
-    public function getExpiresAt()
+    public function getExpiresAt(): ?int
     {
         return $this->expiresAt;
     }
 
-    /**
-     * @return int|null
-     */
-    public function getPriority()
+    public function getPriority(): ?int
     {
         return $this->priority;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getPushType()
+    public function getPushType(): ?string
     {
         return $this->pushType;
     }
@@ -201,7 +169,9 @@ final class Notification implements \JsonSerializable
         ];
 
         foreach ($headers as $k => $v) {
-            if (!$v) unset($headers[$k]);
+            if (!$v) {
+                unset($headers[$k]);
+            }
         }
 
         return $headers;

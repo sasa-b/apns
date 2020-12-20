@@ -16,29 +16,29 @@ use SasaB\Apns\Payload\CanBeCastToString;
 
 final class Response implements \JsonSerializable
 {
-    const OK = 200;
-    const BAD_REQUEST = 400;
-    const AUTH_PROVIDER_ERROR = 403;
-    const METHOD_NOT_ALLOWED = 405;
-    const DEVICE_TOKEN_INACTIVE = 410;
-    const PAYLOAD_TOO_LARGE = 413;
-    const TOO_MANY_REQUESTS = 429;
-    const SERVER_ERROR = 500;
-    const SERVER_UNAVAILABLE = 503;
-
     use CanBeCastToString;
 
-    private $apnsId;
+    public const OK = 200;
+    public const BAD_REQUEST = 400;
+    public const AUTH_PROVIDER_ERROR = 403;
+    public const METHOD_NOT_ALLOWED = 405;
+    public const DEVICE_TOKEN_INACTIVE = 410;
+    public const PAYLOAD_TOO_LARGE = 413;
+    public const TOO_MANY_REQUESTS = 429;
+    public const SERVER_ERROR = 500;
+    public const SERVER_UNAVAILABLE = 503;
 
-    private $code;
+    private string $apnsId;
 
-    private $reason;
+    private int $code;
 
-    private $description;
+    private string $reason;
 
-    private $timestamp;
+    private ?string $description = null;
 
-    private static $errorDescriptions = [
+    private ?string $timestamp = null;
+
+    private static array $errorDescriptions = [
         'BadCollapseId'               => 'The collapse identifier exceeds the maximum allowed size',
         'BadDeviceToken'              => 'The specified device token was bad. Verify that the request contains a valid token and that the token matches the environment',
         'BadExpirationDate'           => 'The apns-expiration value is bad',
@@ -69,7 +69,7 @@ final class Response implements \JsonSerializable
         'Shutdown'                    => 'The server is shutting down',
     ];
 
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return $this->code === 200
             ? ['code' => $this->code, 'reason' => $this->reason]
@@ -87,7 +87,7 @@ final class Response implements \JsonSerializable
             return $response;
         }
 
-        $body = json_decode($psr->getBody()->getContents(), true);
+        $body = json_decode($psr->getBody()->getContents(), true, JSON_THROW_ON_ERROR);
 
         $response->reason = $body['reason'];
         $response->description = self::$errorDescriptions[$body['reason']];
