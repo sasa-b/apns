@@ -6,7 +6,7 @@
  * Time: 16:59
  */
 
-namespace SasaB\Tests;
+namespace SasaB\Apns\Tests;
 
 
 use PHPUnit\Framework\TestCase;

@@ -37,7 +37,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "SasaB\\Tests\\": "tests/"
+            "SasaB\\Apns\\Tests\\": "tests/"
         }
     }
 }

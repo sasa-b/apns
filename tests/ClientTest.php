@@ -6,7 +6,7 @@
  * Time: 17:00
  */
 
-namespace SasaB\Tests;
+namespace SasaB\Apns\Tests;
 
 
 use PHPUnit\Framework\TestCase;
@@ -39,6 +39,8 @@ class ClientTest extends TestCase
 
     public function testItCanSendBatchOfNotifications()
     {
+        $testsDir = __DIR__.DIRECTORY_SEPARATOR;
+
         $tokenKey = $this->makeTokenKey();
 
         $jwt = JWT::new($this->teamId, $tokenKey);
@@ -53,7 +55,7 @@ class ClientTest extends TestCase
 
         $notification->setApsId($apsId = Uuid::uuid4());
 
-        $notification->setPushTopic(file_get_contents('certs/apns-topic.txt'));
+        $notification->setPushTopic(file_get_contents($testsDir.'certs/apns-topic.txt'));
 
         $notification->setCustomKey('mdm', '4DA9FEC7-5443-48B3-9491-892F1147BE47');
 

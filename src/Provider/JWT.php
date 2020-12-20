@@ -35,9 +35,10 @@ final class JWT implements Trust
         $signer = new Sha256();
         $pk = new Key($tokenKey->getContent());
 
-        $now = new \DateTime();
-        $issuedAt = $now->getTimestamp();
-        $expiresAt = $now->modify('+1 hour')->getTimestamp();
+        $issuedAt = new \DateTimeImmutable();
+        $expiresAt = \DateTimeImmutable::createFromMutable(
+            (new \DateTime())->modify('+1 hour')
+        );
 
         $token = (new Builder())
             ->issuedBy($teamId) // (iss claim) - teamId
@@ -72,20 +73,21 @@ final class JWT implements Trust
 
     public function hasExpired(): bool
     {
-        return $this->token->isExpired();
+        return $this->token->isExpired(new \DateTimeImmutable());
     }
 
     public function refresh(TokenKey $tokenKey): JWT
     {
-        if ($this->token->isExpired()) {
+        if ($this->hasExpired()) {
             $teamId = $this->token->getClaim('iss');
 
             $signer = new Sha256();
             $pk = new Key($tokenKey->getContent());
 
-            $now = new \DateTime();
-            $issuedAt = $now->getTimestamp();
-            $expiresAt = $now->modify('+1 hour')->getTimestamp();
+            $issuedAt = new \DateTimeImmutable();
+            $expiresAt = \DateTimeImmutable::createFromMutable(
+                (new \DateTime())->modify('+1 hour')
+            );
 
             $this->token = (new Builder())
                 ->issuedBy($teamId) // (iss claim) - teamId
