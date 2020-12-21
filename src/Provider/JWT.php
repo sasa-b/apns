@@ -9,7 +9,9 @@
 namespace SasaB\Apns\Provider;
 
 use Lcobucci\JWT\Builder;
+use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Parser;
+use Lcobucci\JWT\Signer\Ecdsa\MultibyteStringConverter;
 use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\Ecdsa\Sha256;
 use Lcobucci\JWT\Token;
@@ -18,12 +20,10 @@ use SasaB\Apns\Header;
 
 final class JWT implements Trust
 {
-    private Token $token;
-
-    public function __construct(Token  $token)
-    {
-        $this->token = $token;
-    }
+    public function __construct(
+        private Token $token,
+        private Configuration $config
+    ) {}
 
     public function __toString(): string
     {
@@ -32,27 +32,41 @@ final class JWT implements Trust
 
     public static function new(string $teamId, TokenKey $tokenKey): JWT
     {
-        $signer = new Sha256();
-        $pk = new Key($tokenKey->getContent());
+        $config = Configuration::forAsymmetricSigner(
+            new Sha256(new MultibyteStringConverter()),
+            Key\LocalFileReference::file($tokenKey->getFile()),
+            Key\InMemory::empty()
+        );
+
+        $signer = $config->signer();
+        $pk = $config->signingKey();
 
         $issuedAt = new \DateTimeImmutable();
         $expiresAt = \DateTimeImmutable::createFromMutable(
             (new \DateTime())->modify('+1 hour')
         );
 
-        $token = (new Builder())
+        $token = ($config->builder())
             ->issuedBy($teamId) // (iss claim) - teamId
             ->issuedAt($issuedAt)
             ->expiresAt($expiresAt)
             ->withHeader('kid', $tokenKey->getKeyId())
             ->getToken($signer,  $pk);
 
-        return new self($token);
+        return new self($token, $config);
     }
 
-    public static function parse(string $token): JWT
+    public static function parse(string $token, TokenKey $tokenKey): JWT
     {
-        return new self((new Parser())->parse($token));
+        $config = Configuration::forAsymmetricSigner(
+            new Sha256(new MultibyteStringConverter()),
+            Key\LocalFileReference::file($tokenKey->getFile()),
+            Key\InMemory::empty()
+        );
+
+        $parser = $config->parser();
+
+        return new self($parser->parse($token), $config);
     }
 
     public function setToken(Token $token): JWT
@@ -68,7 +82,7 @@ final class JWT implements Trust
 
     public function asString(): string
     {
-        return (string) $this->token;
+        return $this->token->toString();
     }
 
     public function hasExpired(): bool
@@ -79,17 +93,17 @@ final class JWT implements Trust
     public function refresh(TokenKey $tokenKey): JWT
     {
         if ($this->hasExpired()) {
-            $teamId = $this->token->getClaim('iss');
+            $teamId = $this->token->claims()->get('iss');
 
-            $signer = new Sha256();
-            $pk = new Key($tokenKey->getContent());
+            $signer = $this->config->signer();
+            $pk = $this->config->signingKey();
 
             $issuedAt = new \DateTimeImmutable();
             $expiresAt = \DateTimeImmutable::createFromMutable(
                 (new \DateTime())->modify('+1 hour')
             );
 
-            $this->token = (new Builder())
+            $this->token = ($this->config->builder())
                 ->issuedBy($teamId) // (iss claim) - teamId
                 ->issuedAt($issuedAt)
                 ->expiresAt($expiresAt)
