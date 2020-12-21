@@ -9,9 +9,7 @@
 namespace SasaB\Apns\Tests\ProviderTest;
 
 
-use Lcobucci\JWT\Token;
-
-use SasaB\Apns\Provider\JWT;
+use SasaB\Apns\Provider\Token\JWT;
 use SasaB\Apns\Tests\CreateTokenKeyTrust;
 
 use PHPUnit\Framework\TestCase;
@@ -21,36 +19,41 @@ class TokenKeyTest extends TestCase
 {
     use CreateTokenKeyTrust;
 
-    protected $teamId;
-
-    public function testItCanCreateValidJWT()
+    public function testItCanCreateValidJWT(): void
     {
         $tokenKey = $this->makeTokenKey();
 
-        $jwt = JWT::new($this->teamId, $tokenKey);
+        $jwt = JWT::with($this->teamId, $tokenKey);
 
-        self::assertInstanceOf(Token::class,  $jwt->getToken());
-        self::assertRegExp('/^[a-zA-Z0-9\-_]+?\.[a-zA-Z0-9\-_]+?\.([a-zA-Z0-9\-_]+)?$/', (string) $jwt->getToken());
+        self::assertMatchesRegularExpression('/^[a-zA-Z0-9\-_]+?\.[a-zA-Z0-9\-_]+?\.([a-zA-Z0-9\-_]+)?$/', $jwt->asString());
     }
 
-    public function testItCanProvideAuthHeader()
+    public function testItCanProvideAuthHeader(): void
     {
         $tokenKey = $this->makeTokenKey();
 
-        $jwt = JWT::new($this->teamId, $tokenKey);
+        $jwt = JWT::with($this->teamId, $tokenKey);
 
         self::assertSame([
-            'headers' => ['authorization' => 'Bearer '.$jwt->getToken()]
+            'headers' => ['authorization' => 'Bearer '.$jwt->asString()]
         ], $jwt->getAuthOptions());
     }
 
-    public function testItCanCheckIfTokenExpired()
+    public function testItCanCheckIfTokenExpired(): void
     {
         $tokenKey = $this->makeTokenKey();
 
-        $jwt = JWT::new($this->teamId, $tokenKey);
+        $jwt = JWT::with($this->teamId, $tokenKey);
 
         self::assertFalse($jwt->hasExpired());
     }
 
+    public function testItCanReadKeyIdFromAuthKeyFileName(): void
+    {
+        $keyId = file_get_contents(dirname(__DIR__).'/certs/key-id.txt');
+
+        $tokenKey = $this->makeTokenKey("AuthKey_{$keyId}.p8");
+
+        self::assertSame($keyId, $tokenKey->getKeyId());
+    }
 }

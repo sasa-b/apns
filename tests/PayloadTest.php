@@ -15,7 +15,7 @@ use SasaB\Apns\Payload\Aps;
 
 class PayloadTest extends TestCase
 {
-    public function testAlert()
+    public function testAlert(): void
     {
         $alert = new Alert('');
 
@@ -39,11 +39,11 @@ class PayloadTest extends TestCase
         $alert->setLocArgs($data['loc-args']);
         $alert->setLaunchImage($data['launch-image']);
 
-        $this->assertSame($data, $alert->jsonSerialize());
-        $this->assertSame(json_encode($data), json_encode($alert));
+        self::assertSame($data, $alert->jsonSerialize());
+        self::assertSame(json_encode($data), json_encode($alert));
     }
 
-    public function testApsWithAlert()
+    public function testApsWithAlert(): void
     {
         $alertData = [
             'title'          => 'Test Title',
@@ -81,6 +81,6 @@ class PayloadTest extends TestCase
         $aps->setCategory($apsData['category']);
         $aps->setThreadId($apsData['thread-id']);
 
-        $this->assertSame(array_merge($apsData, ['alert' => $alertData]), $aps->asArray());
+        self::assertSame(array_merge($apsData, ['alert' => $alertData]), $aps->asArray());
     }
 }

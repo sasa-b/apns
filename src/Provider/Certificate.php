@@ -21,11 +21,8 @@ final class Certificate implements Trust
     public function __construct(string $file)
     {
         $this->file = $file;
-
-        if (extension_loaded('openssl')) {
-            $cert = openssl_x509_parse(file_get_contents($file));
-            $this->pushTopic = $cert['subject']['UID'];
-        }
+        $cert = openssl_x509_parse(file_get_contents($file));
+        $this->pushTopic = $cert['subject']['UID'];
     }
 
     public static function fromFile(string $path): Certificate

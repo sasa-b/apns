@@ -9,22 +9,21 @@
 namespace SasaB\Apns\Tests;
 
 
-use SasaB\Apns\Provider\TokenKey;
+use SasaB\Apns\Provider\Token\Key;
 
 trait CreateTokenKeyTrust
 {
-    protected $teamId;
+    protected string $teamId = '';
 
-    protected function makeTokenKey(): TokenKey
+    protected function makeTokenKey(string $filename = null): Key
     {
         $testsDir = __DIR__.DIRECTORY_SEPARATOR;
 
         $keyId = file_get_contents($testsDir.'certs/key-id.txt');
         $this->teamId = file_get_contents($testsDir.'certs/team-id.txt');
 
-        $tokenKey = new TokenKey($keyId);
-        $tokenKey->loadFromFile($testsDir.'certs/AuthKey.p8');
+        $filename ??= 'AuthKey.p8';
 
-        return $tokenKey;
+        return Key::loadFromFile("{$testsDir}certs/$filename", $keyId);
     }
 }

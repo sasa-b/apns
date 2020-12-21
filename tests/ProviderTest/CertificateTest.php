@@ -23,7 +23,9 @@ class CertificateTest extends TestCase
 
         $authOptions = $certificate->getAuthOptions();
 
-        self::assertArraySubset(['cert' => $certificate->getFilePath()], $authOptions);
+        self::assertArrayHasKey('cert', $authOptions);
+
+        self::assertSame($certificate->getFilePath(), $authOptions['cert']);
 
         self::assertArrayHasKey('headers', $authOptions);
 

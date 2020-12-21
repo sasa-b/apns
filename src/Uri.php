@@ -11,8 +11,8 @@ namespace SasaB\Apns;
 
 final class Uri
 {
-    private const DEV = 'https://api.development.push.apple.com';
-    private const PROD = 'https://api.push.apple.com';
+    private const DEV = 'https://api.development.push.apple.com:433';
+    private const PROD = 'https://api.push.apple.com:443';
     private const PATH = '/3/device/';
 
     private string $value;

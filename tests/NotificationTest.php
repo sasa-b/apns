@@ -18,7 +18,7 @@ use SasaB\Apns\Payload\Aps;
 
 class NotificationTest extends TestCase
 {
-    public function testItCanSetApsId()
+    public function testItCanSetApsId(): void
     {
         $message = new Notification('device-token');
 
@@ -26,10 +26,10 @@ class NotificationTest extends TestCase
 
         $message->setApsId($uuid);
 
-        $this->assertSame((string) $uuid, (string) $message->getApsId());
+        self::assertSame((string) $uuid, (string) $message->getApsId());
     }
 
-    public function testItCanSetApsWithSimpleAlertPayload()
+    public function testItCanSetApsWithSimpleAlertPayload(): void
     {
         $aps = new Aps(new Alert('Hello World'));
 
@@ -37,12 +37,12 @@ class NotificationTest extends TestCase
 
         $message->setAps($aps);
 
-        $this->assertArrayHasKey('aps', $message->getPayload());
-        $this->assertSame($aps->asArray(), $message->getPayload()['aps']);
-        $this->assertSame(json_encode(['aps' => $aps]), json_encode($message));
+        self::assertArrayHasKey('aps', $message->getPayload());
+        self::assertSame($aps->asArray(), $message->getPayload()['aps']);
+        self::assertSame(json_encode(['aps' => $aps]), json_encode($message));
     }
 
-    public function testItCanSetApsWithAlertPayload()
+    public function testItCanSetApsWithAlertPayload(): void
     {
         $alert = new Alert('Hello World Text', 'Hello World Title');
 
@@ -52,13 +52,13 @@ class NotificationTest extends TestCase
 
         $message->setAps($aps);
 
-        $this->assertArrayHasKey('aps', $message->getPayload());
-        $this->assertArrayHasKey('title', $alert->asArray());
-        $this->assertSame($aps->asArray(), $message->getPayload()['aps']);
-        $this->assertSame(json_encode(['aps' => $aps]), json_encode($message));
+        self::assertArrayHasKey('aps', $message->getPayload());
+        self::assertArrayHasKey('title', $alert->asArray());
+        self::assertSame($aps->asArray(), $message->getPayload()['aps']);
+        self::assertSame(json_encode(['aps' => $aps]), json_encode($message));
     }
 
-    public function testItCanSetCustomPayload()
+    public function testItCanSetCustomPayload(): void
     {
         $message = new Notification('device-token');
 
@@ -67,11 +67,11 @@ class NotificationTest extends TestCase
 
         $payload = $message->getCustom();
 
-        $this->assertEquals(['acme' => 'baz', 'foo' => 'bar'], $payload);
-        $this->assertSame(json_encode($payload), (string) $message);
+        self::assertEquals(['acme' => 'baz', 'foo' => 'bar'], $payload);
+        self::assertSame(json_encode($payload), (string) $message);
     }
 
-    public function testItCanSetMdmPayload()
+    public function testItCanSetMdmPayload(): void
     {
         $mdmPayload = ['mdm' => 'xxx-xxx-xxx-xxx'];
 
@@ -79,9 +79,9 @@ class NotificationTest extends TestCase
 
         $message->setCustomKey('mdm', 'xxx-xxx-xxx-xxx');
 
-        $this->assertInstanceOf(UuidInterface::class, $message->getApsId());
-        $this->assertSame($mdmPayload, $message->getCustom());
+        self::assertInstanceOf(UuidInterface::class, $message->getApsId());
+        self::assertSame($mdmPayload, $message->getCustom());
 
-        $this->assertSame(json_encode($mdmPayload), (string) $message);
+        self::assertSame(json_encode($mdmPayload), (string) $message);
     }
 }

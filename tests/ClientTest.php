@@ -13,13 +13,13 @@ use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use SasaB\Apns\Client;
 use SasaB\Apns\Notification;
-use SasaB\Apns\Provider\JWT;
+use SasaB\Apns\Provider\Token\JWT;
 
 class ClientTest extends TestCase
 {
     use CreateCertificateTrust, CreateTokenKeyTrust;
 
-    public function testItCanSendNotification()
+    public function testItCanSendCertificateNotifications()
     {
         $certificate = $this->makeCertificate();
 
@@ -33,20 +33,20 @@ class ClientTest extends TestCase
 
         $response = $client->send($notification);
 
-        $this->assertSame((string) $apsId, (string) $response->getApnsId());
-        $this->assertSame(200, $response->getCode());
+        self::assertSame((string) $apsId, (string) $response->getApnsId());
+        self::assertSame(200, $response->getCode());
     }
 
-    public function testItCanSendBatchOfNotifications()
+    public function testItCanSendTokenNotifications()
     {
         $testsDir = __DIR__.DIRECTORY_SEPARATOR;
 
         $tokenKey = $this->makeTokenKey();
 
-        $jwt = JWT::new($this->teamId, $tokenKey);
+        $jwt = JWT::with($this->teamId, $tokenKey);
 
         if ($jwt->hasExpired()) {
-            $jwt->refresh($tokenKey);
+            $jwt->refresh();
         }
 
         $client = Client::auth($jwt);
@@ -61,7 +61,7 @@ class ClientTest extends TestCase
 
         $response = $client->send($notification);
 
-        $this->assertSame((string) $apsId, (string) $response->getApnsId());
-        $this->assertSame(200, $response->getCode());
+        self::assertSame((string) $apsId, (string) $response->getApnsId());
+        self::assertSame(200, $response->getCode());
     }
 }
