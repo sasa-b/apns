@@ -1,3 +1,4 @@
 /vendor/
 .idea
 /tests/certs
+/example/working_example.php
