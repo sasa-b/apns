@@ -6,12 +6,12 @@
  * Time: 17:20
  */
 
-namespace SasaB\Tests\ProviderTest;
+namespace SasaB\Apns\Tests\ProviderTest;
 
 
 use PHPUnit\Framework\TestCase;
 use SasaB\Apns\Provider\Certificate;
-use SasaB\Tests\CreateCertificateTrust;
+use SasaB\Apns\Tests\CreateCertificateTrust;
 
 class CertificateTest extends TestCase
 {
@@ -23,11 +23,13 @@ class CertificateTest extends TestCase
 
         $authOptions = $certificate->getAuthOptions();
 
-        $this->assertArraySubset(['cert' => $certificate->getFilePath()], $authOptions);
+        self::assertArrayHasKey('cert', $authOptions);
 
-        $this->assertArrayHasKey('headers', $authOptions);
+        self::assertSame($certificate->getFilePath(), $authOptions['cert']);
 
-        $this->assertArrayHasKey('apns-topic', $authOptions['headers']);
+        self::assertArrayHasKey('headers', $authOptions);
+
+        self::assertArrayHasKey('apns-topic', $authOptions['headers']);
     }
 
     public function testItThrowsWhenCertFileIsNotFound()

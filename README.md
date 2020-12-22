@@ -59,20 +59,19 @@ echo $response;
 require '/vendor/autoload.php';
 
 use SasaB\Apns\Client;
-use SasaB\Apns\Provider\JWT;
-use SasaB\Apns\Provider\TokenKey;
+use SasaB\Apns\Provider\Token\JWT;
+use SasaB\Apns\Provider\Token\Key;
 
 use SasaB\Apns\Payload\Aps;
 use SasaB\Apns\Payload\Alert;
 use SasaB\Apns\Notification;
 
-$tokenKey = new TokenKey('{token_key}');
-$tokenKey->loadFromFile('/AuthKey.p8');
+$tokenKey = Key::loadFromFile('/AuthKey.p8');
 
-$jwt = JWT::new('{team_id}', $tokenKey);
+$jwt = JWT::with('{team_id}', $tokenKey);
 
 if ($jwt->hasExpired()) {
-    $jwt->refresh($tokenKey);
+    $jwt->refresh();
 }
 
 $client = Client::auth($jwt);

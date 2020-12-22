@@ -6,7 +6,7 @@
  * Time: 16:59
  */
 
-namespace SasaB\Tests;
+namespace SasaB\Apns\Tests;
 
 
 use PHPUnit\Framework\TestCase;
@@ -26,7 +26,7 @@ class NotificationTest extends TestCase
 
         $message->setApsId($uuid);
 
-        $this->assertSame((string) $uuid, (string) $message->getApsId());
+        self::assertSame((string) $uuid, (string) $message->getApsId());
     }
 
     public function testItCanSetApsWithSimpleAlertPayload()
@@ -37,9 +37,9 @@ class NotificationTest extends TestCase
 
         $message->setAps($aps);
 
-        $this->assertArrayHasKey('aps', $message->getPayload());
-        $this->assertSame($aps->asArray(), $message->getPayload()['aps']);
-        $this->assertSame(json_encode(['aps' => $aps]), json_encode($message));
+        self::assertArrayHasKey('aps', $message->getPayload());
+        self::assertSame($aps->asArray(), $message->getPayload()['aps']);
+        self::assertSame(json_encode(['aps' => $aps]), json_encode($message));
     }
 
     public function testItCanSetApsWithAlertPayload()
@@ -52,10 +52,10 @@ class NotificationTest extends TestCase
 
         $message->setAps($aps);
 
-        $this->assertArrayHasKey('aps', $message->getPayload());
-        $this->assertArrayHasKey('title', $alert->asArray());
-        $this->assertSame($aps->asArray(), $message->getPayload()['aps']);
-        $this->assertSame(json_encode(['aps' => $aps]), json_encode($message));
+        self::assertArrayHasKey('aps', $message->getPayload());
+        self::assertArrayHasKey('title', $alert->asArray());
+        self::assertSame($aps->asArray(), $message->getPayload()['aps']);
+        self::assertSame(json_encode(['aps' => $aps]), json_encode($message));
     }
 
     public function testItCanSetCustomPayload()
@@ -67,8 +67,8 @@ class NotificationTest extends TestCase
 
         $payload = $message->getCustom();
 
-        $this->assertEquals(['acme' => 'baz', 'foo' => 'bar'], $payload);
-        $this->assertSame(json_encode($payload), (string) $message);
+        self::assertEquals(['acme' => 'baz', 'foo' => 'bar'], $payload);
+        self::assertSame(json_encode($payload), (string) $message);
     }
 
     public function testItCanSetMdmPayload()
@@ -79,9 +79,9 @@ class NotificationTest extends TestCase
 
         $message->setCustomKey('mdm', 'xxx-xxx-xxx-xxx');
 
-        $this->assertInstanceOf(UuidInterface::class, $message->getApsId());
-        $this->assertSame($mdmPayload, $message->getCustom());
+        self::assertInstanceOf(UuidInterface::class, $message->getApsId());
+        self::assertSame($mdmPayload, $message->getCustom());
 
-        $this->assertSame(json_encode($mdmPayload), (string) $message);
+        self::assertSame(json_encode($mdmPayload), (string) $message);
     }
 }

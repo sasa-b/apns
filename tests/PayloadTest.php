@@ -6,7 +6,7 @@
  * Time: 14:19
  */
 
-namespace SasaB\Tests;
+namespace SasaB\Apns\Tests;
 
 
 use PHPUnit\Framework\TestCase;
@@ -39,8 +39,8 @@ class PayloadTest extends TestCase
         $alert->setLocArgs($data['loc-args']);
         $alert->setLaunchImage($data['launch-image']);
 
-        $this->assertSame($data, $alert->jsonSerialize());
-        $this->assertSame(json_encode($data), json_encode($alert));
+        self::assertSame($data, $alert->jsonSerialize());
+        self::assertSame(json_encode($data), json_encode($alert));
     }
 
     public function testApsWithAlert()
@@ -81,6 +81,6 @@ class PayloadTest extends TestCase
         $aps->setCategory($apsData['category']);
         $aps->setThreadId($apsData['thread-id']);
 
-        $this->assertSame(array_merge($apsData, ['alert' => $alertData]), $aps->asArray());
+        self::assertSame(array_merge($apsData, ['alert' => $alertData]), $aps->asArray());
     }
 }

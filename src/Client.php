@@ -8,7 +8,7 @@ use GuzzleHttp\Promise;
 
 use SasaB\Apns\Provider\Certificate;
 use SasaB\Apns\Provider\Trust;
-use SasaB\Apns\Provider\JWT;
+use SasaB\Apns\Provider\Token\JWT;
 
 
 /**

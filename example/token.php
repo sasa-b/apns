@@ -11,19 +11,18 @@ require dirname(__DIR__).'/vendor/autoload.php';
 use Ramsey\Uuid\Uuid;
 use SasaB\Apns\Client;
 use SasaB\Apns\Notification;
-use SasaB\Apns\Provider\JWT;
-use SasaB\Apns\Provider\TokenKey;
+use SasaB\Apns\Provider\Token\JWT;
+use SasaB\Apns\Provider\Token\Key;
 
 $keyId = file_get_contents('../tests/certs/key-id.txt');
 $teamId = file_get_contents('../tests/certs/team-id.txt');
 
-$tokenKey = new TokenKey($keyId);
-$tokenKey->loadFromFile('../tests/certs/AuthKey.p8');
+$tokenKey = Key::loadFromFile('../tests/certs/AuthKey.p8', $keyId);
 
-$jwt = JWT::new($teamId, $tokenKey);
+$jwt = JWT::with($teamId, $tokenKey);
 
 if ($jwt->hasExpired()) {
-    $jwt->refresh($tokenKey);
+    $jwt->refresh();
 }
 
 $client = Client::auth($jwt);

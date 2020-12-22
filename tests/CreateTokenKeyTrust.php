@@ -6,23 +6,24 @@
  * Time: 18:07
  */
 
-namespace SasaB\Tests;
+namespace SasaB\Apns\Tests;
 
 
-use SasaB\Apns\Provider\TokenKey;
+use SasaB\Apns\Provider\Token\Key;
 
 trait CreateTokenKeyTrust
 {
-    protected $teamId;
+    protected $teamId = '';
 
-    protected function makeTokenKey(): TokenKey
+    protected function makeTokenKey(string $filename = null): Key
     {
-        $keyId = file_get_contents('certs/key-id.txt');
-        $this->teamId = file_get_contents('certs/team-id.txt');
+        $testsDir = __DIR__.DIRECTORY_SEPARATOR;
 
-        $tokenKey = new TokenKey($keyId);
-        $tokenKey->loadFromFile('certs/AuthKey.p8');
+        $keyId = file_get_contents($testsDir.'certs/key-id.txt');
+        $this->teamId = file_get_contents($testsDir.'certs/team-id.txt');
 
-        return $tokenKey;
+        $filename = $filename ?? 'AuthKey.p8';
+
+        return Key::loadFromFile("{$testsDir}certs/$filename", $keyId);
     }
 }
