@@ -6,10 +6,7 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Promise;
 
-use SasaB\Apns\Provider\Certificate;
 use SasaB\Apns\Provider\Trust;
-use SasaB\Apns\Provider\JWT;
-
 
 /**
  * Created by PhpStorm.
@@ -20,9 +17,9 @@ use SasaB\Apns\Provider\JWT;
 
 final class Client
 {
-    private $trust;
+    private Trust $trust;
 
-    private $http;
+    private ClientInterface $http;
 
     private function __construct(Trust $trust, ClientInterface $http)
     {
@@ -85,9 +82,6 @@ final class Client
         return new self($trust, new \GuzzleHttp\Client($options));
     }
 
-    /**
-     * @return Trust|Certificate|JWT
-     */
     public function getTrust(): Trust
     {
         return $this->trust;

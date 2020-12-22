@@ -25,9 +25,7 @@ final class JWT implements Trust
         private \OpenSSLAsymmetricKey $pk,
     )
     {
-        ['header' => $header, 'claims' => $claims] = $this->asArray();
-
-        $this->encoded = $this->encode($header, $claims);
+        $this->encode();
     }
 
     public function __toString(): string
@@ -78,9 +76,11 @@ final class JWT implements Trust
         );
     }
 
-    private function encode(array $header, array $claims): string
+    private function encode(): void
     {
-        return \Firebase\JWT\JWT::encode($claims, $this->pk, 'ES256', null, $header);
+        ['header' => $header, 'claims' => $claims] = $this->asArray();
+
+        $this->encoded = \Firebase\JWT\JWT::encode($claims, $this->pk, 'ES256', null, $header);
     }
 
     public function asString(): string
@@ -99,10 +99,7 @@ final class JWT implements Trust
             $now = new \DateTime();
             $this->iat = $now->getTimestamp();
             $this->exp = $now->modify('+1 hour')->getTimestamp();
-
-            ['header' => $header, 'claims' => $claims] = $this->asArray();
-
-            $this->encoded = $this->encode($header, $claims);
+            $this->encode();
         }
         return $this;
     }
