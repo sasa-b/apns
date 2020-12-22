@@ -11,15 +11,14 @@ namespace SasaB\Apns\Provider\Token;
 
 final class Key
 {
-    private string $keyId;
-    private string $content;
     private ?string $file = null;
     private ?\OpenSSLAsymmetricKey $resource = null;
 
-    public function __construct(string $keyId, string $content)
+    public function __construct(
+        private string $keyId,
+        private string $content
+    )
     {
-        $this->keyId = $keyId;
-        $this->content = $content;
         if ($content) {
             $this->openSSLPrivateKey($content);
         }
