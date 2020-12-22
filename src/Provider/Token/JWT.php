@@ -16,10 +16,6 @@ use SasaB\Apns\Provider\Trust;
 final class JWT implements Trust
 {
     /**
-     * @var string|null
-     */
-    private $encoded;
-    /**
      * @var string
      */
     private $kid;
@@ -39,6 +35,10 @@ final class JWT implements Trust
      * @var resource
      */
     private $pk;
+    /**
+     * @var string|null
+     */
+    private $encoded;
 
     /**
      * JWT constructor.
@@ -120,7 +120,7 @@ final class JWT implements Trust
 
     public function asString(): string
     {
-        return $this->encoded ?? '';
+        return $this->encoded;
     }
 
     public function hasExpired(): bool
