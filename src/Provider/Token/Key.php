@@ -36,10 +36,7 @@ final class Key
         }
         $key = new Key($keyId ?? '', '');
         if (!$keyId) {
-            $key->keyId = $key->getKeyIdFromFileName() ?? '';
-            if (!$key->keyId) {
-                throw new Exception("Missing key id");
-            }
+            $key->keyId = $key->getKeyIdFromFileName() ?? throw new Exception("Missing key id");
         }
         $key->file = $path;
         $key->content = $key->readFile();
