@@ -2,3 +2,4 @@
 .idea
 /tests/certs
 /example/working_example.php
+.phpunit.result.cache

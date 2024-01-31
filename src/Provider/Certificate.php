@@ -6,11 +6,11 @@
  * Time: 14:39
  */
 
-namespace SasaB\Apns\Provider;
+namespace Sco\Apns\Provider;
 
 
 use GuzzleHttp\RequestOptions;
-use SasaB\Apns\Header;
+use Sco\Apns\Header;
 
 final class Certificate implements Trust
 {

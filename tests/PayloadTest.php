@@ -6,12 +6,12 @@
  * Time: 14:19
  */
 
-namespace SasaB\Apns\Tests;
+namespace Sco\Apns\Tests;
 
 
 use PHPUnit\Framework\TestCase;
-use SasaB\Apns\Payload\Alert;
-use SasaB\Apns\Payload\Aps;
+use Sco\Apns\Payload\Alert;
+use Sco\Apns\Payload\Aps;
 
 class PayloadTest extends TestCase
 {

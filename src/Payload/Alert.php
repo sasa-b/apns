@@ -6,7 +6,7 @@
  * Time: 14:38
  */
 
-namespace SasaB\Apns\Payload;
+namespace Sco\Apns\Payload;
 
 final class Alert implements \JsonSerializable
 {

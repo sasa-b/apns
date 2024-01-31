@@ -1,12 +1,12 @@
 <?php
 
-namespace SasaB\Apns;
+namespace Sco\Apns;
 
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Promise;
 
-use SasaB\Apns\Provider\Trust;
+use Sco\Apns\Provider\Trust;
 
 /**
  * Created by PhpStorm.
@@ -43,8 +43,8 @@ final class Client
     }
 
     /**
-     * @param \SasaB\Apns\Notification[] $notifications
-     * @return \SasaB\Apns\Response[]
+     * @param \Sco\Apns\Notification[] $notifications
+     * @return \Sco\Apns\Response[]
      */
     public function sendBatch(array $notifications): array
     {

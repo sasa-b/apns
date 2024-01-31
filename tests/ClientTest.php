@@ -6,14 +6,14 @@
  * Time: 17:00
  */
 
-namespace SasaB\Apns\Tests;
+namespace Sco\Apns\Tests;
 
 
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
-use SasaB\Apns\Client;
-use SasaB\Apns\Notification;
-use SasaB\Apns\Provider\Token\JWT;
+use Sco\Apns\Client;
+use Sco\Apns\Notification;
+use Sco\Apns\Provider\Token\JWT;
 
 class ClientTest extends TestCase
 {

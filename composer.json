@@ -3,7 +3,7 @@
     "description": "APNS - Apple Push Notification Service PHP client",
     "type": "library",
     "license": "MIT",
-    "version": "2.0.1",
+    "version": "3.0.1",
     "keywords": [
         "apns",
         "apns2",
@@ -22,7 +22,7 @@
     ],
     "minimum-stability": "stable",
     "require": {
-        "php": ">=8.0",
+        "php": ">=8.2",
         "ext-json": "*",
         "ramsey/uuid": "^4.1",
         "firebase/php-jwt": "^5.2",
@@ -34,12 +34,12 @@
     },
     "autoload": {
         "psr-4": {
-            "SasaB\\Apns\\": "src/"
+            "Sco\\Apns\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "SasaB\\Apns\\Tests\\": "tests/"
+            "Sco\\Apns\\Tests\\": "tests/"
         }
     }
 }

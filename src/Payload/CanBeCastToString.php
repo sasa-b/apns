@@ -6,7 +6,7 @@
  * Time: 17:36
  */
 
-namespace SasaB\Apns\Payload;
+namespace Sco\Apns\Payload;
 
 
 trait CanBeCastToString

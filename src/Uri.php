@@ -6,7 +6,7 @@
  * Time: 12:31
  */
 
-namespace SasaB\Apns;
+namespace Sco\Apns;
 
 
 final class Uri

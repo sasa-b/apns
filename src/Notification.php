@@ -1,12 +1,12 @@
 <?php
 
-namespace SasaB\Apns;
+namespace Sco\Apns;
 
 
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
-use SasaB\Apns\Payload\Aps;
-use SasaB\Apns\Payload\CanBeCastToString;
+use Sco\Apns\Payload\Aps;
+use Sco\Apns\Payload\CanBeCastToString;
 
 /**
  * Created by PhpStorm.
@@ -46,7 +46,7 @@ final class Notification implements \JsonSerializable
         return $this->custom;
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return $this->getPayload();
     }

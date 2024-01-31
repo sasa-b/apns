@@ -6,7 +6,7 @@
  * Time: 21:28
  */
 
-namespace SasaB\Apns\Payload;
+namespace Sco\Apns\Payload;
 
 
 interface ApsKey

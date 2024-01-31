@@ -6,10 +6,10 @@
  * Time: 18:07
  */
 
-namespace SasaB\Apns\Tests;
+namespace Sco\Apns\Tests;
 
 
-use SasaB\Apns\Provider\Token\Key;
+use Sco\Apns\Provider\Token\Key;
 
 trait CreateTokenKeyTrust
 {

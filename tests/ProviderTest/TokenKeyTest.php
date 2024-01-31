@@ -6,11 +6,11 @@
  * Time: 17:20
  */
 
-namespace SasaB\Apns\Tests\ProviderTest;
+namespace Sco\Apns\Tests\ProviderTest;
 
 
-use SasaB\Apns\Provider\Token\JWT;
-use SasaB\Apns\Tests\CreateTokenKeyTrust;
+use Sco\Apns\Provider\Token\JWT;
+use Sco\Apns\Tests\CreateTokenKeyTrust;
 
 use PHPUnit\Framework\TestCase;
 

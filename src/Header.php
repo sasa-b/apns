@@ -6,7 +6,7 @@
  * Time: 15:16
  */
 
-namespace SasaB\Apns;
+namespace Sco\Apns;
 
 
 interface Header

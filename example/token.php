@@ -9,10 +9,10 @@
 require dirname(__DIR__).'/vendor/autoload.php';
 
 use Ramsey\Uuid\Uuid;
-use SasaB\Apns\Client;
-use SasaB\Apns\Notification;
-use SasaB\Apns\Provider\Token\JWT;
-use SasaB\Apns\Provider\Token\Key;
+use Sco\Apns\Client;
+use Sco\Apns\Notification;
+use Sco\Apns\Provider\Token\JWT;
+use Sco\Apns\Provider\Token\Key;
 
 $keyId = file_get_contents('../tests/certs/key-id.txt');
 $teamId = file_get_contents('../tests/certs/team-id.txt');

@@ -6,13 +6,13 @@
  * Time: 21:03
  */
 
-namespace SasaB\Apns;
+namespace Sco\Apns;
 
 
 use Psr\Http\Message\ResponseInterface;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
-use SasaB\Apns\Payload\CanBeCastToString;
+use Sco\Apns\Payload\CanBeCastToString;
 
 final class Response implements \JsonSerializable
 {

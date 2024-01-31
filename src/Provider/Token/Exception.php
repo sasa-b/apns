@@ -6,7 +6,7 @@
  * Time: 11:32
  */
 
-namespace SasaB\Apns\Provider\Token;
+namespace Sco\Apns\Provider\Token;
 
 
 class Exception extends \LogicException

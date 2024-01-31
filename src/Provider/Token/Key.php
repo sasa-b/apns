@@ -6,7 +6,7 @@
  * Time: 14:52
  */
 
-namespace SasaB\Apns\Provider\Token;
+namespace Sco\Apns\Provider\Token;
 
 
 final class Key

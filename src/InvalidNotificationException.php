@@ -6,7 +6,7 @@
  * Time: 17:30
  */
 
-namespace SasaB\Apns;
+namespace Sco\Apns;
 
 
 class InvalidNotificationException extends \RuntimeException

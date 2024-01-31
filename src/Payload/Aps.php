@@ -1,6 +1,6 @@
 <?php
 
-namespace SasaB\Apns\Payload;
+namespace Sco\Apns\Payload;
 
 
 /**

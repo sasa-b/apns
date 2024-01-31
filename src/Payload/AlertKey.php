@@ -6,7 +6,7 @@
  * Time: 21:23
  */
 
-namespace SasaB\Apns\Payload;
+namespace Sco\Apns\Payload;
 
 
 interface AlertKey

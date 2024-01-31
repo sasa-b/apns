@@ -32,12 +32,12 @@ composer require sasa-b/apns2
 ```php
 require '/vendor/autoload.php';
 
-use SasaB\Apns\Client;
-use SasaB\Apns\Provider\Certificate;
+use Sco\Apns\Client;
+use Sco\Apns\Provider\Certificate;
 
-use SasaB\Apns\Payload\Aps;
-use SasaB\Apns\Payload\Alert;
-use SasaB\Apns\Notification;
+use Sco\Apns\Payload\Aps;
+use Sco\Apns\Payload\Alert;
+use Sco\Apns\Notification;
 
 $certificate = Certificate::fromFile('/PushCert.pem');
 
@@ -58,13 +58,13 @@ echo $response;
 ```php
 require '/vendor/autoload.php';
 
-use SasaB\Apns\Client;
-use SasaB\Apns\Provider\Token\JWT;
-use SasaB\Apns\Provider\Token\Key;
+use Sco\Apns\Client;
+use Sco\Apns\Provider\Token\JWT;
+use Sco\Apns\Provider\Token\Key;
 
-use SasaB\Apns\Payload\Aps;
-use SasaB\Apns\Payload\Alert;
-use SasaB\Apns\Notification;
+use Sco\Apns\Payload\Aps;
+use Sco\Apns\Payload\Alert;
+use Sco\Apns\Notification;
 
 $tokenKey = Key::loadFromFile('/AuthKey_{keyId}.p8');
 

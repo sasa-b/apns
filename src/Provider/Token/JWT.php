@@ -6,11 +6,11 @@
  * Time: 13:02
  */
 
-namespace SasaB\Apns\Provider\Token;
+namespace Sco\Apns\Provider\Token;
 
 
-use SasaB\Apns\Header;
-use SasaB\Apns\Provider\Trust;
+use Sco\Apns\Header;
+use Sco\Apns\Provider\Trust;
 
 
 final class JWT implements Trust

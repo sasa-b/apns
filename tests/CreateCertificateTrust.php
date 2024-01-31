@@ -6,10 +6,10 @@
  * Time: 18:08
  */
 
-namespace SasaB\Apns\Tests;
+namespace Sco\Apns\Tests;
 
 
-use SasaB\Apns\Provider\Certificate;
+use Sco\Apns\Provider\Certificate;
 
 trait CreateCertificateTrust
 {

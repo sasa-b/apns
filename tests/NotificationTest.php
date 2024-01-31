@@ -6,15 +6,15 @@
  * Time: 16:59
  */
 
-namespace SasaB\Apns\Tests;
+namespace Sco\Apns\Tests;
 
 
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
-use SasaB\Apns\Notification;
-use SasaB\Apns\Payload\Alert;
-use SasaB\Apns\Payload\Aps;
+use Sco\Apns\Notification;
+use Sco\Apns\Payload\Alert;
+use Sco\Apns\Payload\Aps;
 
 class NotificationTest extends TestCase
 {

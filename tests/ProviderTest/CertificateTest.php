@@ -6,12 +6,12 @@
  * Time: 17:20
  */
 
-namespace SasaB\Apns\Tests\ProviderTest;
+namespace Sco\Apns\Tests\ProviderTest;
 
 
 use PHPUnit\Framework\TestCase;
-use SasaB\Apns\Provider\Certificate;
-use SasaB\Apns\Tests\CreateCertificateTrust;
+use Sco\Apns\Provider\Certificate;
+use Sco\Apns\Tests\CreateCertificateTrust;
 
 class CertificateTest extends TestCase
 {

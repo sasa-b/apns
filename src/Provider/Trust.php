@@ -6,7 +6,7 @@
  * Time: 14:39
  */
 
-namespace SasaB\Apns\Provider;
+namespace Sco\Apns\Provider;
 
 interface Trust
 {
