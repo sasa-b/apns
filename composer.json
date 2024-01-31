@@ -3,7 +3,7 @@
     "description": "APNS - Apple Push Notification Service PHP client",
     "type": "library",
     "license": "MIT",
-    "version": "3.0.1",
+    "version": "3.0.0",
     "keywords": [
         "apns",
         "apns2",
